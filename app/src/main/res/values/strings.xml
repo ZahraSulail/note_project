@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Notes App</string>
+    <string name="add_new_item_description">يمكنك  إضافة ملاحظة إلى القائمة و اختيار نوع ولون الملاحظة.</string>
+    <string name="add">اضافة</string>
+    <string name="add_note_text">أضف ملاحظة</string>
+    <string name="delete_confirmation">delete_confirmation</string>
+    <string name="cancel">cancel</string>
+    <string name="confirm">confirm</string>
+    <string name="fail_to_select_photo">fail_to select_photo</string>
+    <string name="select_Photo">select_photo</string>
+    <string name="failed_to">failed_to get_image</string>
+    <string name="failed_to_get_Image">failed_to_get_Image</string>
+    <string name="select_picture">select_picture</string>
+    <string name="read_permission_neede_to_access_files">read_permission_neede_to_access_files</string>
+    <string name="failed_to_get_image">failed_to_get_image</string>
+</resources>

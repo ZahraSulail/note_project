@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="action_staggered_grid" type="id"/>
+    <item name="typeRadioGroup" type="id"/>
+    <item name="titleTextView" type="id"/>
+    <item name="colorRadioGroup" type="id"/>
+    <item name="guideline" type="id"/>
+    <item name="frameLayout" type="id"/>
+    <item name="checkNoteCheckBox" type="id"/>
+    <item name="cardViewNote" type="id"/>
+    <item name="cardViewCheckNote" type="id"/>
+    <item name="cardViewPhoto" type="id"/>
+    <item name="button_submit" type="id"/>
+</resources>
