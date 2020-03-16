@@ -22,7 +22,7 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
 
     //EditText variable
     private EditText mNotePhotoEditText;
-
+    int position ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -35,6 +35,7 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
         //Intent to receive notes that need to edit
         Intent intent =  getIntent();
         Note note = (Note) intent.getSerializableExtra( "note_photo_details");
+        position = intent.getIntExtra( "note_photo_position_key", 0 );
         Drawable imageResId = mNotePhotoImageView.getDrawable();
         String text = mNotePhotoEditText.getText().toString();
         mNotePhotoEditText.setText(note.getText());
@@ -44,9 +45,10 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
     public void onBackPressed() {
         Note note;
         String text = mNotePhotoEditText.getText().toString();
-        note = new NotePhotoItem( text, Constants.NOTE_PHOTO_DETAILS,  photos[AddNewNoteActivity.index] );
+        note = new NotePhotoItem( text, Constants.NOTE__PHOTO_VIEW_TYPE,  photos[AddNewNoteActivity.index] );
         Intent intent = new Intent();
-        intent.putExtra("note_photo_edit","");
+        intent.putExtra(Constants.NOTE, note);
+        intent.putExtra( "note_photo_position_key", position );
         setResult(RESULT_OK, intent);
         finish();
     }

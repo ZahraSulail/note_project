@@ -122,17 +122,20 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             private TextView noteTextView;
             NoteViewHolder(@NonNull View itemView, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
                 super( itemView );
+                position=   getAdapterPosition();
                 noteTextView = itemView.findViewById( R.id.note_text);
 
                 itemView.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        position=   getAdapterPosition();
                         mItemClickListener.onClickItem(position);
                     }
                 } );
                 itemView.setOnLongClickListener( new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
+                        position=   getAdapterPosition();
                         mItemLongClickListener.onLongClickItem( position );
                         return true;
                     }
@@ -149,18 +152,21 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             NoteChecItemViewHolder(@NonNull View itemView, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
                 super( itemView );
+
                 noteCheckTextView = itemView.findViewById( R.id.note_check_text );
                 noteCheckBox = itemView.findViewById( R.id.note_check_box);
 
                 itemView.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        position=   getAdapterPosition();
                         mItemClickListener.onClickItem(position);
                     }
                 } );
                 itemView.setOnLongClickListener( new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
+                        position=   getAdapterPosition();
                         mItemLongClickListener.onLongClickItem( position );
                         return true;
                     }
@@ -182,12 +188,15 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    position=   getAdapterPosition();
                     mItemClickListener.onClickItem(position);
+
                 }
             } );
             itemView.setOnLongClickListener( new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    position=   getAdapterPosition();
                     mItemLongClickListener.onLongClickItem( position );
                     return true;
                 }

@@ -14,6 +14,7 @@ import com.barmej.notesapp.data.Note;
 import com.barmej.notesapp.data.NoteCheckItem;
 
 public class NoteCheckDetailsActivity extends AppCompatActivity {
+    int position;
 
     //EditText variable
     private EditText mNoteCheckEditText;
@@ -33,6 +34,7 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
         Note note = (Note) intent.getSerializableExtra( "note_check_details");
+        position = intent.getIntExtra( "note_check_position_key", 0 );
         String text = mNoteCheckEditText.getText().toString();
         boolean isChecked = mNoteCheckBox.isChecked();
     }
@@ -42,9 +44,10 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         Note note;
         String text = mNoteCheckEditText.getText().toString();
         boolean isChecked = mNoteCheckBox.isChecked();
-        note = new NoteCheckItem(text, Constants.NOTE_CHECK_DETAILS, isChecked );
+        note = new NoteCheckItem(text, Constants.NOTE_CHECK_VIEW_TYPE, isChecked );
         Intent intent = new Intent();
         intent.putExtra(Constants.NOTE, note);
+        intent.putExtra( "note_check_position_key", position );
         setResult(RESULT_OK, intent);
         finish();
     }

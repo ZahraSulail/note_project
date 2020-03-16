@@ -30,6 +30,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import static com.barmej.notesapp.Constants.NOTE;
+import static com.barmej.notesapp.Constants.NOTE_CHECK_VIEW_TYPE;
+import static com.barmej.notesapp.Constants.NOTE_VIEW_TYPE;
+import static com.barmej.notesapp.Constants.NOTE__PHOTO_VIEW_TYPE;
 import static java.lang.String.*;
 import static java.lang.String.valueOf;
 
@@ -67,31 +71,36 @@ public class MainActivity extends AppCompatActivity {
         mItems = new ArrayList<Note>();
 
         //Overriding itemClickListener
-        mAdapter =new NoteAdapter( mItems, new ItemClickListener() {
+        mAdapter = new NoteAdapter( mItems, new ItemClickListener() {
 
             @Override
             public void onClickItem(int position) {
                 Note note = mItems.get( position );
+                //note = mItems.set( )
                 Intent intent;
              switch (note.getViewType()){
                  case Constants.NOTE_VIEW_TYPE:
                      intent = new Intent(MainActivity.this, NoteDetailsActivity.class);
-                     intent.putExtra( "note_details", note );
+                     intent.putExtra( "note_details", note);
+                     intent.putExtra( "not_postion_key", position );
                      startActivityForResult(intent, Constants.NOTE_DETAILS);
                      break;
                      case Constants.NOTE__PHOTO_VIEW_TYPE:
                          intent = new Intent(MainActivity.this, NotePhotoDetailsActivity.class);
+
                          intent.putExtra( "note_photo_details", note );
+                         intent.putExtra( "note_photo_position_key", position );
                          startActivityForResult(intent,Constants.NOTE_PHOTO_DETAILS);
                          break;
                          case Constants.NOTE_CHECK_VIEW_TYPE:
                              intent = new Intent(MainActivity.this, NoteCheckDetailsActivity.class);
                              intent.putExtra( "note_check_details", note );
+                             intent.putExtra( "note_check_position_key", position );
                              startActivityForResult(intent, Constants.NOTE_CHECK_DETAILS);
 
                              break;
                  default:
-                     throw new IllegalStateException( "Unexpected value: " + note.getViewType() );
+                     throw new IllegalStateException( "Unexpected value: " + note);
              }
             }
         }, new ItemLongClickListener() {
@@ -135,28 +144,32 @@ public class MainActivity extends AppCompatActivity {
         Note note;
         if(requestCode == Constants.ADD_NOTE ){
             if(resultCode == RESULT_OK && data != null  ){
-                 note = (Note) data.getSerializableExtra(Constants.NOTE);
+                 note = (Note) data.getSerializableExtra( NOTE);
                  addItem( note);
             }
         }else{
 
             if(requestCode == Constants.NOTE_DETAILS){
                 if(resultCode == RESULT_OK && data!= null){
-                    note = (Note) data.getSerializableExtra( Constants.NOTE );
-                    addItem( note );
+                    note = (Note) data.getSerializableExtra( NOTE );
+                 int index =  data.getIntExtra(  "not_postion_key", 0 );
+                 mItems.set(index,note);
+                 mAdapter.notifyDataSetChanged();
                 }
             }else{
                 if(requestCode == Constants.NOTE_PHOTO_DETAILS){
                     if(resultCode == RESULT_OK && data != null){
-                        note = (Note) data.getSerializableExtra( Constants.NOTE );
-                        addItem( note );
+                        note = (Note) data.getSerializableExtra( NOTE );
+                        int index = data.getIntExtra( "note_photo_position_key",  0 );
+                        mAdapter.notifyDataSetChanged();
                     }
                 }else{
 
                     if(requestCode == Constants.NOTE_CHECK_DETAILS){
                         if(resultCode == RESULT_OK && data != null){
-                            note = (Note) data.getSerializableExtra( Constants.NOTE );
-                            addItem( note );
+                            note = (Note) data.getSerializableExtra( NOTE );
+                            int index = data.getIntExtra( "note_check_position_key", 0 );
+                            mAdapter.notifyDataSetChanged();
                         }
                     }
                 }
