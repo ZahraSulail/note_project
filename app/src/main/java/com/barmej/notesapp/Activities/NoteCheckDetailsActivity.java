@@ -33,9 +33,10 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
 
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
-        Note note = (Note) intent.getSerializableExtra( "note_check_details");
+        Note note = (NoteCheckItem) intent.getSerializableExtra( "note_check_details");
         position = intent.getIntExtra( "note_check_position_key", 0 );
         String text = mNoteCheckEditText.getText().toString();
+        mNoteCheckEditText.setText( note.getText() );
         boolean isChecked = mNoteCheckBox.isChecked();
     }
 

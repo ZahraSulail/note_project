@@ -26,7 +26,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
         Note note= (Note) intent.getSerializableExtra( "note_details" );
-        position = intent.getIntExtra( "not_postion_key", 0 );
+        position = intent.getIntExtra( "not_position_key", 0 );
         String text = mNoteEditText.getText().toString();
         mNoteEditText.setText(note.getText());
 
@@ -38,7 +38,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
         note = new Note( text, Constants.NOTE_VIEW_TYPE );
         Intent intent = new Intent();
         intent.putExtra( Constants.NOTE, note);
-        intent.putExtra( "not_postion_key", position );
+        intent.putExtra( "note_position_key", position );
         setResult(RESULT_OK, intent);
         finish();
     }

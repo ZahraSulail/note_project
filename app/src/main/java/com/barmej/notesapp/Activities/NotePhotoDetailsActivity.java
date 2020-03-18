@@ -34,7 +34,7 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
 
         //Intent to receive notes that need to edit
         Intent intent =  getIntent();
-        Note note = (Note) intent.getSerializableExtra( "note_photo_details");
+        Note note = (NotePhotoItem) intent.getSerializableExtra( "note_photo_details");
         position = intent.getIntExtra( "note_photo_position_key", 0 );
         Drawable imageResId = mNotePhotoImageView.getDrawable();
         String text = mNotePhotoEditText.getText().toString();
