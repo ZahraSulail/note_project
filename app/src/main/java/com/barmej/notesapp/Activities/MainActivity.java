@@ -29,8 +29,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import static com.barmej.notesapp.Constants.NOTE;
-import static com.barmej.notesapp.Constants.NOTE_CHECK_VIEW_TYPE;
-import static com.barmej.notesapp.Constants.NOTE__PHOTO_VIEW_TYPE;
 import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,19 +76,21 @@ public class MainActivity extends AppCompatActivity {
              switch (note.getViewType()){
                  case Constants.NOTE_VIEW_TYPE:
                      intent = new Intent(MainActivity.this, NoteDetailsActivity.class);
+
                      intent.putExtra( "note_details", note);
                      intent.putExtra( "note_position_key", position );
                      startActivityForResult(intent, Constants.NOTE_DETAILS);
                      break;
                      case Constants.NOTE__PHOTO_VIEW_TYPE:
                          intent = new Intent(MainActivity.this, NotePhotoDetailsActivity.class);
-                         intent.putExtra( "note_photo_details", note  );
+                         Intent notePhotoItem =  intent.putExtra( "note_photo_details", (NotePhotoItem) note  );
                          intent.putExtra( "note_photo_position_key", position );
                          startActivityForResult(intent,Constants.NOTE_PHOTO_DETAILS);
                          break;
                          case Constants.NOTE_CHECK_VIEW_TYPE:
                              intent = new Intent(MainActivity.this, NoteCheckDetailsActivity.class);
-                             intent.putExtra( "note_check_details",   note);
+
+                             Intent noteCheckItem = intent.putExtra( "note_check_details", ( NoteCheckItem)  note);
                              intent.putExtra( "note_check_position_key", position );
                              startActivityForResult(intent, Constants.NOTE_CHECK_DETAILS);
 
