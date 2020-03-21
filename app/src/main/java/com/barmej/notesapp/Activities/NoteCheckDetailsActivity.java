@@ -34,6 +34,7 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
         Note note = (NoteCheckItem) intent.getSerializableExtra( "note_check_details");
+        note = (Note) intent.getSerializableExtra( "note_check_detais_1" );
         position = intent.getIntExtra( "note_check_position_key", 0 );
         String text = mNoteCheckEditText.getText().toString();
         mNoteCheckEditText.setText( note.getText() );
@@ -47,7 +48,7 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         boolean isChecked = mNoteCheckBox.isChecked();
         note = new NoteCheckItem(text, Constants.NOTE_CHECK_VIEW_TYPE, isChecked );
         Intent intent = new Intent();
-        intent.putExtra(Constants.NOTE, note);
+        intent.putExtra(  Constants.NOTE , (NoteCheckItem) note);
         intent.putExtra( "note_check_position_key", position );
         setResult(RESULT_OK, intent);
         finish();

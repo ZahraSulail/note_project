@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.barmej.notesapp.Constants;
 import com.barmej.notesapp.R;
 import com.barmej.notesapp.data.Note;
+import com.barmej.notesapp.data.NoteCheckItem;
 import com.barmej.notesapp.data.NotePhotoItem;
 
 import static com.barmej.notesapp.Activities.AddNewNoteActivity.photos;
@@ -35,6 +36,7 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
         //Intent to receive notes that need to edit
         Intent intent =  getIntent();
         Note note = (NotePhotoItem) intent.getSerializableExtra( "note_photo_details");
+        note = (NotePhotoItem) intent.getSerializableExtra( "note_photo_detais_1" );
         position = intent.getIntExtra( "note_photo_position_key", 0 );
         Drawable imageResId = mNotePhotoImageView.getDrawable();
         String text = mNotePhotoEditText.getText().toString();
@@ -47,7 +49,8 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
         String text = mNotePhotoEditText.getText().toString();
         note = new NotePhotoItem( text, Constants.NOTE__PHOTO_VIEW_TYPE,  photos[AddNewNoteActivity.index] );
         Intent intent = new Intent();
-        intent.putExtra(Constants.NOTE, note);
+        intent.putExtra(Constants.NOTE, (NotePhotoItem) note);
+        intent.putExtra( Constants.NOTE ,  note);
         intent.putExtra( "note_photo_position_key", position );
         setResult(RESULT_OK, intent);
         finish();
