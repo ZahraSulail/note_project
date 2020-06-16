@@ -74,12 +74,13 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (note != null) {
             switch (note.getViewType()) {
+
                 case (Constants.NOTE_VIEW_TYPE):
                     ((NoteViewHolder) holder).noteTextView.setText(note.getText());
                     break;
                 case(Constants.NOTE_CHECK_VIEW_TYPE):
                     ((NoteChecItemViewHolder) holder).noteCheckTextView.setText(note.getText());
-                    ((NoteChecItemViewHolder) holder). noteCheckBox.setChecked(((NoteCheckItem) note).isCheced());
+                    ((NoteChecItemViewHolder) holder). noteCheckBox.setChecked(((NoteCheckItem) note).isChecked());
                     break;
                 case (Constants.NOTE__PHOTO_VIEW_TYPE):
                     ((NotePhotoItemViewHolder) holder).notePhotoTextViewt.setText(note.getText()  );
@@ -90,7 +91,9 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 default:
                     throw new IllegalStateException( "Unexpected value: " + note.getViewType() );
+
             }
+            holder.itemView.setBackgroundColor( note.getBackgroundColor() );
         }
     }
 

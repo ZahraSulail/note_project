@@ -16,6 +16,7 @@ import com.barmej.notesapp.R;
 import com.barmej.notesapp.data.Note;
 import com.barmej.notesapp.data.NoteCheckItem;
 import com.barmej.notesapp.data.NotePhotoItem;
+import com.barmej.notesapp.data.NoteViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -25,11 +26,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 public class AddNewNoteActivity extends AppCompatActivity {
 
     //ImageView variable
     ImageView mImageView;
+    int color;
 
     //CheckBox variable
     private CheckBox mNoteChecBox;
@@ -58,20 +63,21 @@ public class AddNewNoteActivity extends AppCompatActivity {
     //integer Photo ArrayList
     public static final int [] photos = {
             R.drawable.note,
-      R.drawable.note_1,
-      R.drawable.note_2,
-      R.drawable.note_3,
-      R.drawable.note_4,
+            R.drawable.note_1,
+            R.drawable.note_2,
+            R.drawable.note_3,
+            R.drawable.note_4,
    };
 
     //int index
     public static int index = -1;
-
+    private Note note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_add_new_note );
+        setContentView(R.layout.activity_add_new_note);
+
 
         //FindVies by Id's
         noteRadioButton = findViewById( R.id.note_radioButton );
@@ -91,6 +97,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
         mNoteCheckEditText = findViewById( R.id.checkNoteEditText );
         mPhotNoteEditText = findViewById( R.id.photoNoteEditText );
         MaterialButton mAddButton = findViewById( R.id.button_submit );
+
 
         //noteRadioButton setOnChangeListener method to view noteCrdView
         noteRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
@@ -137,6 +144,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    color = Color.RED;
 
                     mPhotoCardView.setCardBackgroundColor( Color.RED );
                     mNoteCardView.setCardBackgroundColor( Color.RED );
@@ -150,6 +158,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    color = Color.BLUE;
                     mPhotoCardView.setCardBackgroundColor( Color.BLUE);
                     mNoteCardView.setCardBackgroundColor( Color.BLUE);
                     mNoteCheckCardView.setCardBackgroundColor( Color.BLUE );
@@ -162,6 +171,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    color = Color.YELLOW;
                     mPhotoCardView.setCardBackgroundColor( Color.YELLOW );
                     mNoteCardView.setCardBackgroundColor( Color.YELLOW);
                     mNoteCheckCardView.setCardBackgroundColor( Color.YELLOW );
@@ -176,9 +186,11 @@ public class AddNewNoteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 Note note;
+
                 if(noteRadioButton.isChecked()) {
                     String text = mNoteEditText.getText().toString();
-                    note = new Note(text, Constants.NOTE_VIEW_TYPE);
+                    note = new Note(text,  Constants.NOTE_VIEW_TYPE);
+
 
                 }else if(notePhotoRadioButton.isChecked()) {
 
@@ -191,6 +203,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
                     note = new NoteCheckItem(text, Constants.NOTE_CHECK_VIEW_TYPE, isChecked);
 
                 }
+                note.setBackgroundColor( color );
                 intent.putExtra( Constants.NOTE, note );
                 setResult( RESULT_OK, intent );
                 finish();
@@ -213,7 +226,13 @@ public class AddNewNoteActivity extends AppCompatActivity {
     }
 
 
-}
+    }
+
+
+
+
+
+
 
 
 

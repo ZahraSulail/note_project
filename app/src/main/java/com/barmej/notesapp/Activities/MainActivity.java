@@ -3,6 +3,10 @@ package com.barmej.notesapp.Activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +26,16 @@ import com.barmej.notesapp.adapter.NoteAdapter;
 import com.barmej.notesapp.data.Note;
 import com.barmej.notesapp.data.NoteCheckItem;
 import com.barmej.notesapp.data.NotePhotoItem;
+import com.barmej.notesapp.data.NoteViewModel;
+import com.barmej.notesapp.data.database.dao.NoteCheckItemDao;
 import com.barmej.notesapp.listener.ItemClickListener;
 import com.barmej.notesapp.listener.ItemLongClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static com.barmej.notesapp.Constants.NOTE;
 import static com.barmej.notesapp.Constants.NOTE_CHECK_VIEW_TYPE;
@@ -47,9 +56,15 @@ public class MainActivity extends AppCompatActivity {
     // ArrayList
     private ArrayList<Note> mItems;
 
+    private List<Note> textNotes;
+    private List<NotePhotoItem> photoNotes;
+    private List<NoteCheckItem> checkNotes;
+
     //LayoutManagers to view items as a list or a grid
     RecyclerView.LayoutManager mListLayoutManager;
     RecyclerView.LayoutManager mGridtLayoutManager;
+
+    private Note note;
 
     //menu
     Menu mMenu;
@@ -65,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
         //Create ArrayList object
 
         mItems = new ArrayList<Note>();
+        textNotes = new ArrayList<>();
+        photoNotes = new ArrayList<>();
+        checkNotes = new ArrayList<>();
 
         //Overriding itemClickListener
         mAdapter = new NoteAdapter( mItems, new ItemClickListener() {
@@ -82,15 +100,15 @@ public class MainActivity extends AppCompatActivity {
                      break;
                      case Constants.NOTE__PHOTO_VIEW_TYPE:
                          intent = new Intent(MainActivity.this, NotePhotoDetailsActivity.class);
-                         intent.putExtra( "note_photo_details", note );
-                         intent.putExtra( "note_phot_detais_1", (NotePhotoItem) note );
+                         intent.putExtra( "note_photo_details", note  );
+                         //intent.putExtra( "note_phot_detais_1", (NotePhotoItem) note );
                          intent.putExtra( "note_photo_position_key", position );
                          startActivityForResult(intent,Constants.NOTE_PHOTO_DETAILS);
                          break;
                          case Constants.NOTE_CHECK_VIEW_TYPE:
                              intent = new Intent(MainActivity.this, NoteCheckDetailsActivity.class);
-                             intent.putExtra( "note_check_details",  note );
-                             intent.putExtra( "note_check_detais_1", (NoteCheckItem) note );
+                             intent.putExtra( "note_check_details",  note  );
+                             //intent.putExtra( "note_check_detais_1", (NoteCheckItem) note );
                              intent.putExtra( "note_check_position_key", position );
                              startActivityForResult(intent, Constants.NOTE_CHECK_DETAILS);
 
@@ -125,6 +143,13 @@ public class MainActivity extends AppCompatActivity {
                 addNewNoteActivity();
             }
         } );
+
+    /*
+     Call the observers functions
+     */
+      requestNote();
+      requestNoteCheckItem();
+      requestNotePhotoItem();
     }
 
     //AddNewNoteActivity intent
@@ -157,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     if(resultCode == RESULT_OK && data != null){
                         note = (Note) data.getSerializableExtra( NOTE );
                         int index = data.getIntExtra( "note_photo_position_key",  0 );
+                        mItems.set(index,note);
                         mAdapter.notifyDataSetChanged();
                     }
                 }else{
@@ -165,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                         if(resultCode == RESULT_OK && data != null){
                             note = (Note) data.getSerializableExtra( NOTE );
                             int index = data.getIntExtra( "note_check_position_key", 0 );
+                            mItems.set(index,note);
                             mAdapter.notifyDataSetChanged();
                         }
                     }
@@ -228,5 +255,59 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*
+Request note data
+ */
+    private void requestNote(){
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
+        noteViewModel.getAllNoteLiveData().observe( this, new Observer<List<Note>>() {
 
+            @Override
+            public void onChanged(List<Note> notes) {
+                    textNotes.clear();
+                    textNotes.addAll(notes);
+                    showData();
+            }
+        } );
+
+    }
+
+    /*
+Request noteCheckItem data
+*/
+    private void requestNoteCheckItem(){
+        NoteViewModel noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+        noteViewModel.getAllNoteCheckItemLiveData().observe( this, new Observer<List<NoteCheckItem>>() {
+            @Override
+            public void onChanged(List<NoteCheckItem> noteCheckItems) {
+                checkNotes.clear();
+                checkNotes.addAll(noteCheckItems);
+                showData();
+            }
+        } );
+    }
+
+    /*
+     Request notePhotItem data
+  */
+    private void requestNotePhotoItem(){
+        NoteViewModel noteViewModel = ViewModelProviders.of( this ).get( NoteViewModel.class );
+        noteViewModel.getAllNotePhotoItemLiveData().observe( this, new Observer<List<NotePhotoItem>>() {
+            @Override
+            public void onChanged(List<NotePhotoItem> notePhotoItems) {
+                photoNotes.clear();
+                photoNotes.addAll(notePhotoItems);
+                showData();
+            }
+        } );
+    }
+
+    private void showData() {
+        mItems.clear();
+        mItems.addAll( textNotes );
+        mItems.addAll( photoNotes );
+        mItems.addAll( checkNotes );
+        Collections.sort( mItems );
+        mAdapter.notifyDataSetChanged();
+    }
 }

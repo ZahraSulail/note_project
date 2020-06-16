@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="androidx.lifecycle.LiveData"/>
+        <variable
+            name="note_photo"
+            type="LiveData&lt;com.barmej.notesapp.data.NotePhotoItem>" />
+        <variable
+            name="note"
+            type="LiveData&lt;com.barmej.notesapp.data.Note>" />
+    </data>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/blue">
 
     <ImageView
+        imageRes="@{note_photo.imageResId}"
         android:id="@+id/photoImageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -22,8 +34,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
+        android:text="@{not.text}"
         android:gravity="top"
         android:hint="@string/add_note_text"
         android:padding="16dp" />
 
 </RelativeLayout>
+</layout>

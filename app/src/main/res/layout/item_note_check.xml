@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:padding="16dp"
-        android:background="@android:color/holo_orange_light"/>
+       />
 
     <CheckBox
         android:id="@+id/note_check_box"
