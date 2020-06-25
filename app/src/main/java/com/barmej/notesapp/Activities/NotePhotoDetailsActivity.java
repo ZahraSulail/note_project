@@ -35,11 +35,12 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         binding =  binding = DataBindingUtil.setContentView(this, R.layout.activity_note_photo_details);
         binding.setLifecycleOwner(this);
+        binding.getRoot();
         //Intent to receive notes that need to edit
         Intent intent =  getIntent();
          note = (NotePhotoItem) intent.getSerializableExtra( "note_photo_details");
          position = intent.getIntExtra( "note_photo_position_key", 0 );
-         binding.setNote( note );
+        // binding.setNotePhoto( note );
 
         requestNotePhotoItem(note.getId());
     }
@@ -66,8 +67,8 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
             public void onChanged(NotePhotoItem notePhotoItem) {
                 //mNotePhotoEditText.setText(notePhotoItem.getText());
                 //mNotePhotoImageView.setImageResource( notePhotoItem.getImageResId());
-               // binding.setNotePhoto( notePhotoItem);
-                binding.setNote( note );
+                //binding.setNotePhoto( notePhotoItem);
+
             }
         } );
     }

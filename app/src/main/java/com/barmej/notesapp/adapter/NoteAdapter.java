@@ -15,12 +15,16 @@ import com.barmej.notesapp.R;
 import com.barmej.notesapp.data.Note;
 import com.barmej.notesapp.data.NoteCheckItem;
 import com.barmej.notesapp.data.NotePhotoItem;
+import com.barmej.notesapp.databinding.ItemNoteBinding;
+import com.barmej.notesapp.databinding.ItemNoteCheckBinding;
+import com.barmej.notesapp.databinding.ItemNotePhotoBinding;
 import com.barmej.notesapp.listener.ItemClickListener;
 import com.barmej.notesapp.listener.ItemLongClickListener;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 //Note adapter class
@@ -47,19 +51,23 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         RecyclerView.ViewHolder viewHolder;
 
+
          switch (viewType){
              case (Constants.NOTE_VIEW_TYPE):
                  view = LayoutInflater.from( parent.getContext()).inflate(R.layout.item_note, parent, false);
-                 viewHolder = new NoteViewHolder( view, mItemClickListener, mItemLongClickListener);
+                 ItemNoteBinding noteBinding = DataBindingUtil.bind( view );
+                 viewHolder = new NoteViewHolder( noteBinding, mItemClickListener, mItemLongClickListener);
                  break;
 
              case (Constants.NOTE_CHECK_VIEW_TYPE):
                  view = LayoutInflater.from( parent.getContext()).inflate(R.layout.item_note_check, parent, false);
-                 viewHolder = new NoteChecItemViewHolder( view, mItemClickListener, mItemLongClickListener);
+                 ItemNoteCheckBinding noteCheckBinding = DataBindingUtil.bind( view );
+                 viewHolder = new NoteChecItemViewHolder( noteCheckBinding,  mItemClickListener, mItemLongClickListener);
                  break;
              case (Constants.NOTE__PHOTO_VIEW_TYPE):
                  view = LayoutInflater.from( parent.getContext()).inflate(R.layout.item_note_photo, parent, false);
-                 viewHolder = new NotePhotoItemViewHolder( view, mItemClickListener, mItemLongClickListener);
+                 ItemNotePhotoBinding notePhotoBinding = DataBindingUtil.bind(view);
+                 viewHolder = new NotePhotoItemViewHolder( notePhotoBinding, mItemClickListener, mItemLongClickListener);
                  break;
              default:
                  throw new IllegalArgumentException();
@@ -76,15 +84,30 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             switch (note.getViewType()) {
 
                 case (Constants.NOTE_VIEW_TYPE):
-                    ((NoteViewHolder) holder).noteTextView.setText(note.getText());
+                    //((NoteViewHolder) holder).noteTextView.setText(note.getText());
+
+                    ((NoteViewHolder) holder).bind( note );
+
+
                     break;
                 case(Constants.NOTE_CHECK_VIEW_TYPE):
+                    /*
                     ((NoteChecItemViewHolder) holder).noteCheckTextView.setText(note.getText());
                     ((NoteChecItemViewHolder) holder). noteCheckBox.setChecked(((NoteCheckItem) note).isChecked());
+                    */
+
+                    ((NoteViewHolder) holder).bind( note );
+                    ((NoteChecItemViewHolder) holder).bind( (NoteCheckItem) note );
+
                     break;
                 case (Constants.NOTE__PHOTO_VIEW_TYPE):
+                    /*
                     ((NotePhotoItemViewHolder) holder).notePhotoTextViewt.setText(note.getText()  );
                     ((NotePhotoItemViewHolder) holder).notePhotoImageView.setImageResource(((NotePhotoItem) note).getImageResId());
+                     */
+
+                    ((NoteViewHolder) holder).bind( note );
+                    ((NotePhotoItemViewHolder) holder).bind( (NotePhotoItem) note );
 
                     break;
 
@@ -122,11 +145,14 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //NoteViewHolder
     class NoteViewHolder extends RecyclerView.ViewHolder{
             int position;
+            final ItemNoteBinding noteBinding;
             private TextView noteTextView;
-            NoteViewHolder(@NonNull View itemView, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
-                super( itemView );
+            NoteViewHolder(@NonNull ItemNoteBinding noteBinding, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
+                super( noteBinding.getRoot());
+                this.noteBinding = noteBinding;
                 position=   getAdapterPosition();
-                noteTextView = itemView.findViewById( R.id.note_text);
+
+
 
                 itemView.setOnClickListener( new View.OnClickListener() {
                     @Override
@@ -144,20 +170,19 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 } );
 
+            }
+            void bind(Note note){
+                noteBinding.setNote( note );
             }
     }
 
          //NoteCheckItemViewHolder
          class NoteChecItemViewHolder extends RecyclerView.ViewHolder{
             int position;
-            private TextView noteCheckTextView;
-            private CheckBox noteCheckBox;
-
-            NoteChecItemViewHolder(@NonNull View itemView, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
-                super( itemView );
-
-                noteCheckTextView = itemView.findViewById( R.id.note_check_text );
-                noteCheckBox = itemView.findViewById( R.id.note_check_box);
+           final ItemNoteCheckBinding noteCheckBinding;
+            NoteChecItemViewHolder(@NonNull ItemNoteCheckBinding noteCheckBinding, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
+                super( noteCheckBinding.getRoot() );
+                this.noteCheckBinding = noteCheckBinding;
 
                 itemView.setOnClickListener( new View.OnClickListener() {
                     @Override
@@ -175,18 +200,19 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 } );
             }
+            void bind(NoteCheckItem noteCheckItem){
+                noteCheckBinding.setNoteCheck( noteCheckItem );
+            }
     }
 
     //NotePhotoViewHolder
      class NotePhotoItemViewHolder extends RecyclerView.ViewHolder{
         int position;
-        private ImageView notePhotoImageView;
-        private TextView notePhotoTextViewt;
-        NotePhotoItemViewHolder(@NonNull View itemView, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
-            super( itemView );
+       final ItemNotePhotoBinding notePhotoBinding;
 
-            notePhotoImageView = itemView.findViewById(R.id.note_photo);
-            notePhotoTextViewt = itemView.findViewById(R.id.note_photo_text);
+        NotePhotoItemViewHolder(@NonNull ItemNotePhotoBinding  notePhotoBinding, final ItemClickListener itemClickListener, final ItemLongClickListener itemLongClickListener) {
+            super( notePhotoBinding.getRoot());
+            this.notePhotoBinding = notePhotoBinding;
 
             itemView.setOnClickListener( new View.OnClickListener() {
                 @Override
@@ -205,7 +231,11 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             } );
         }
-
+        void bind(NotePhotoItem notePhotoItem){
+            notePhotoBinding.setNotePhoto( notePhotoItem );
+        }
     }
+
+
 }
 

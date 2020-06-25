@@ -31,13 +31,15 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_note_check_details );
         binding.setLifecycleOwner( this );
+        binding.getRoot();
+
 
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
          note = (NoteCheckItem) intent.getSerializableExtra( "note_check_details");
         //note = (Note) intent.getSerializableExtra( "note_check_detais_1" );
         position = intent.getIntExtra( "note_check_position_key", 0 );
-        binding.setNote( note );
+        //binding.setNoteCheck( );
 
         requestNoteCheckItem(note.getId());
 
@@ -69,8 +71,7 @@ Request noteCheckItem data
             public void onChanged(NoteCheckItem noteCheckItems) {
                 //mNoteCheckEditText.setText( noteCheckItems.getText() );
                 //boolean isChecked = mNoteCheckBox.isChecked();
-                binding.setNote( note );
-               // binding.setNoteCheck( noteCheckItems );
+                // binding.setNoteCheck(noteCheckItems);
 
             }
         } );

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="note_photo"
+            type="com.barmej.notesapp.data.NotePhotoItem" />
+    </data>
+<LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -7,6 +14,7 @@
         android:id="@+id/note_photo"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        imageRes="@{note_photo.imageResId}"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_photo"
@@ -15,8 +23,10 @@
         android:id="@+id/note_photo_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@{note_photo.text}"
         android:textSize="16sp"
         android:padding="16dp"
         />
 
 </LinearLayout>
+</layout>

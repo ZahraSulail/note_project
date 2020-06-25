@@ -6,9 +6,7 @@
         <variable
             name="note_photo"
             type="LiveData&lt;com.barmej.notesapp.data.NotePhotoItem>" />
-        <variable
-            name="note"
-            type="LiveData&lt;com.barmej.notesapp.data.Note>" />
+
     </data>
 <RelativeLayout
     android:layout_width="match_parent"
@@ -34,7 +32,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
-        android:text="@{not.text}"
+        android:text="@{note_phot.text}"
         android:gravity="top"
         android:hint="@string/add_note_text"
         android:padding="16dp" />

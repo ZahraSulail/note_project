@@ -29,12 +29,14 @@ public class NoteDetailsActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_note_details );
         binding.setLifecycleOwner( this );
+        binding.getRoot();
 
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
         Note note= (Note) intent.getSerializableExtra( "note_details" );
         position = intent.getIntExtra( "note_position_key", 0 );
         binding.setNote( note );
+
 
         requestNote(note.getId());
 

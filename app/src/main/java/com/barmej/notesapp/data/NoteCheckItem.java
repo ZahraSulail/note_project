@@ -32,7 +32,7 @@ public class NoteCheckItem extends Note {
         return isChecked;
     }
 
-    public void setChecked(boolean checked) {
+    public void setChecked(NoteCheckItem checked) {
         isChecked = checked;
     }
 }
