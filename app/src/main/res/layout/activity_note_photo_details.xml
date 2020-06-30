@@ -2,10 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="androidx.lifecycle.LiveData"/>
+
         <variable
             name="note_photo"
-            type="LiveData&lt;com.barmej.notesapp.data.NotePhotoItem>" />
+            type="com.barmej.notesapp.data.NotePhotoItem" />
 
     </data>
 <RelativeLayout
@@ -32,7 +32,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
-        android:text="@{note_phot.text}"
+        android:text="@{note_photo.text}"
         android:gravity="top"
         android:hint="@string/add_note_text"
         android:padding="16dp" />

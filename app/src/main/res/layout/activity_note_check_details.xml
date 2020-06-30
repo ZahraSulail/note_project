@@ -2,10 +2,10 @@
 <layout>
 
     <data>
-        <import type="androidx.lifecycle.LiveData"/>
+
         <variable
             name="note_check"
-            type="LiveData&lt;com.barmej.notesapp.data.NoteCheckItem>" />
+            type="com.barmej.notesapp.data.NoteCheckItem" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="androidx.lifecycle.LiveData"/>
+
         <variable
             name="note"
-            type="LiveData&lt;com.barmej.notesapp.data.Note>"/>
+            type="com.barmej.notesapp.data.Note"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue"
-        tools:ignore="MissingDefaultResource">
+        android:background="@color/blue">
 
         <EditText
             android:id="@+id/noteEditText"

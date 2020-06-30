@@ -56,6 +56,29 @@ public class NoteViewModel extends AndroidViewModel {
 
     }
 
+    public void addNote(Note note) {
+        mRepository.addNote( note );
+    }
+    public void updateNote(Note note){
+        mRepository.updateNote( note );
+    }
+
+    public void addNoteCheck(NoteCheckItem noteCheckItem){
+        mRepository.addNoteCheck( noteCheckItem );
+    }
+
+    public void updateNoteCheck(NoteCheckItem noteCheckItem){
+        mRepository.updateNoteCheck( noteCheckItem );
+    }
+
+    public void addNotePhoto(NotePhotoItem notePhotoItem){
+        mRepository.addNotePhoto( notePhotoItem );
+    }
+    public void updateNotePhoto(NotePhotoItem notePhotoItem){
+        mRepository.updateNotePhoto( notePhotoItem );
+    }
+
+
     /**
      * Get a handle of note LiveData object
      *

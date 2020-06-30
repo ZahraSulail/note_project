@@ -29,7 +29,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_note_details );
         binding.setLifecycleOwner( this );
-        binding.getRoot();
+
 
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
@@ -45,6 +45,8 @@ public class NoteDetailsActivity extends AppCompatActivity {
     // press back button to send results after editting
     public void onBackPressed() {
         Note note;
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
+        //noteViewModel.updateNote( note );
         String text = binding.noteEditText.getText().toString();
         note = new Note( text, Constants.NOTE_VIEW_TYPE );
         Intent intent = new Intent();

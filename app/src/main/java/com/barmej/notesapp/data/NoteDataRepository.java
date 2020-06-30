@@ -61,17 +61,9 @@ public class NoteDataRepository {
 
     public LiveData<List<Note>> getAllNote(){
         // Get LiveData object from database using Room
-        final LiveData<List<Note>> noteLiveData = mAppDatatbase.noteDao().getAllNotes();
-        return noteLiveData;
+        final LiveData<List<Note>> allNotesLiveData = mAppDatatbase.noteDao().getAllNotes();
+        return allNotesLiveData;
     }
-
-        /*
-        Empty note table and save new note to database
-         */
-
-        private void updateNote(final Note note){
-            mAppDatatbase.noteDao().updateNote( note );
-        }
 
          /*
           Get note_check_item data
@@ -113,6 +105,30 @@ public class NoteDataRepository {
 
     public LiveData<NotePhotoItem> getSinglePhotoNoteItem(int id) {
         return mAppDatatbase.notePhotoItemDao().getNotePhotoItem( id );
+    }
+
+
+    public void addNote(Note note) {
+        mAppDatatbase.noteDao().addNote(note);
+    }
+
+    public void updateNote(Note note){
+        mAppDatatbase.noteDao().updateNote( note );
+    }
+
+    public void addNoteCheck(NoteCheckItem noteCheckItem){
+        mAppDatatbase.noteCheckItemDao().addNote( noteCheckItem );
+    }
+    public void updateNoteCheck(NoteCheckItem noteCheckItem){
+        mAppDatatbase.noteCheckItemDao().updateNote( noteCheckItem );
+    }
+
+    public void addNotePhoto(NotePhotoItem notePhotItemm){
+        mAppDatatbase.notePhotoItemDao().addNote( notePhotItemm );
+
+    }
+    public void updateNotePhoto(NotePhotoItem notePhotoItem){
+        mAppDatatbase.notePhotoItemDao().updateNote( notePhotoItem );
     }
 }
 

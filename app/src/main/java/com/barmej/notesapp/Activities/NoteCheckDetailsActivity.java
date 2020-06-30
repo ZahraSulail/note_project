@@ -31,7 +31,7 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_note_check_details );
         binding.setLifecycleOwner( this );
-        binding.getRoot();
+       // binding.getRoot();
 
 
         //Intent to receive notes that need to edit
@@ -51,7 +51,7 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         String text = binding.checkNoteEditText.getText().toString();
         boolean isChecked = binding.checkNoteCheckBox.isChecked();
         note.setText( text );
-        note.setChecked( isChecked );
+        note.setChecked(isChecked);
         Intent intent = new Intent();
         intent.putExtra(  Constants.NOTE ,  note);
         intent.putExtra( "note_check_position_key", position );
@@ -71,7 +71,7 @@ Request noteCheckItem data
             public void onChanged(NoteCheckItem noteCheckItems) {
                 //mNoteCheckEditText.setText( noteCheckItems.getText() );
                 //boolean isChecked = mNoteCheckBox.isChecked();
-                // binding.setNoteCheck(noteCheckItems);
+                 binding.setNoteCheck(noteCheckItems);
 
             }
         } );

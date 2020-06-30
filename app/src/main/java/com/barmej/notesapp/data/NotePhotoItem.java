@@ -12,17 +12,15 @@ public class NotePhotoItem extends Note {
     //int varaible to get photo resource id
      private int imageResId;
 
-     public NotePhotoItem(String text, int note_photoViewType, int photo){
-
-         super( text, Constants.NOTE_VIEW_TYPE );
+     public NotePhotoItem() {
+        super();
      }
 
-     //NotePhotoItem constructor
-    public NotePhotoItem(String text, int viewType, int imageResId, int id) {
-        super(text, viewType, viewType, id);
-        this.imageResId = imageResId;
+     public NotePhotoItem(String text, int note_photoViewType, int photo){
+         super( text, Constants.NOTE__PHOTO_VIEW_TYPE );
+     }
 
-    }
+
 
     //setter and getter method
     public int getImageResId() {

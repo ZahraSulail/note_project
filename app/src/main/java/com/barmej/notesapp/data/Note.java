@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
 //Super class Note
 
 @Entity(tableName = "note")
-public class Note extends LiveData<Note> implements Serializable, Comparable {
+public class Note implements Serializable, Comparable {
     /*
     Create a primary key for not table
      */
@@ -24,19 +24,12 @@ public class Note extends LiveData<Note> implements Serializable, Comparable {
 
     private int backgroundColor;
 
-public Note(){
+    public Note(){
 
-}
-
-    //Note constructor
-    @Ignore
-    public Note(String text, int i, int type, int viewType) {
-        this.text = text;
-        this.viewType = viewType;
-        this.id = id;
     }
 
-    public Note(String text, int noteViewType){
+    @Ignore
+    public Note(String text, int viewType){
         this.text = text;
         this.viewType = viewType;
     }

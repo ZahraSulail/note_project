@@ -28,6 +28,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 public class AddNewNoteActivity extends AppCompatActivity {
@@ -190,20 +191,31 @@ public class AddNewNoteActivity extends AppCompatActivity {
                 if(noteRadioButton.isChecked()) {
                     String text = mNoteEditText.getText().toString();
                     note = new Note(text,  Constants.NOTE_VIEW_TYPE);
+                    NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
+                    noteViewModel.addNote( note );
+                    //noteViewModel.updateNote( note );
 
 
                 }else if(notePhotoRadioButton.isChecked()) {
 
                     String text = mPhotNoteEditText.getText().toString();
                     note = new NotePhotoItem( text, Constants.NOTE__PHOTO_VIEW_TYPE, photos[index] );
+                    NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
+                    noteViewModel.addNotePhoto((NotePhotoItem) note );
+                   // noteViewModel.updateNotePhoto( (NotePhotoItem) note );
+
 
                 }else{
                     String text = mNoteCheckEditText.getText().toString();
                     boolean isChecked = mNoteChecBox.isChecked();
                     note = new NoteCheckItem(text, Constants.NOTE_CHECK_VIEW_TYPE, isChecked);
-
+                    NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
+                    noteViewModel.addNoteCheck((NoteCheckItem) note );
+                    //noteViewModel.updateNoteCheck( (NoteCheckItem) note );
                 }
                 note.setBackgroundColor( color );
+
+
                 intent.putExtra( Constants.NOTE, note );
                 setResult( RESULT_OK, intent );
                 finish();
