@@ -7,7 +7,7 @@ import androidx.databinding.BindingAdapter;
 public class MyBindingAdapter {
 
     @BindingAdapter( "imageRes" )
-    public void setImageRes(ImageView imageView, int resId) {
+    public static void setImageRes(ImageView imageView, int resId) {
         imageView.setImageResource( resId );
     }
 

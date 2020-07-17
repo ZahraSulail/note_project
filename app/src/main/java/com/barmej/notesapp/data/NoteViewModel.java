@@ -56,26 +56,44 @@ public class NoteViewModel extends AndroidViewModel {
 
     }
 
+    /*
+        Nine methods required to add update and delete deferent notes
+     */
     public void addNote(Note note) {
         mRepository.addNote( note );
     }
+
     public void updateNote(Note note){
         mRepository.updateNote( note );
     }
 
+    public void deleteNote(Note note){
+        mRepository.deleteNote(note);
+    }
+
+
     public void addNoteCheck(NoteCheckItem noteCheckItem){
-        mRepository.addNoteCheck( noteCheckItem );
+        mRepository.addNoteCheck(noteCheckItem);
     }
 
     public void updateNoteCheck(NoteCheckItem noteCheckItem){
-        mRepository.updateNoteCheck( noteCheckItem );
+        mRepository.updateNoteCheck(noteCheckItem);
+    }
+
+    public void deleteNoteCheck(NoteCheckItem noteCheckItem){
+        mRepository.deleteNoteCheck(noteCheckItem);
     }
 
     public void addNotePhoto(NotePhotoItem notePhotoItem){
-        mRepository.addNotePhoto( notePhotoItem );
+        mRepository.addNotePhoto( notePhotoItem);
     }
+
     public void updateNotePhoto(NotePhotoItem notePhotoItem){
-        mRepository.updateNotePhoto( notePhotoItem );
+        mRepository.updateNotePhoto(notePhotoItem);
+    }
+
+    public void deleteNotePhoto(NotePhotoItem notePhotoItem){
+        mRepository.deleteNotePhoto(notePhotoItem);
     }
 
 

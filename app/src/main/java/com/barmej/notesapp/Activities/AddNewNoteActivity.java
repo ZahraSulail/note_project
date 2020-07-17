@@ -185,39 +185,36 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+
                 Note note;
 
                 if(noteRadioButton.isChecked()) {
                     String text = mNoteEditText.getText().toString();
-                    note = new Note(text,  Constants.NOTE_VIEW_TYPE);
+                    note = new Note(text);
+                    note.setBackgroundColor(color);
                     NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
                     noteViewModel.addNote( note );
-                    //noteViewModel.updateNote( note );
-
 
                 }else if(notePhotoRadioButton.isChecked()) {
 
                     String text = mPhotNoteEditText.getText().toString();
-                    note = new NotePhotoItem( text, Constants.NOTE__PHOTO_VIEW_TYPE, photos[index] );
+                    note = new NotePhotoItem( text, photos[index] );
+                    note.setBackgroundColor(color);
                     NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
                     noteViewModel.addNotePhoto((NotePhotoItem) note );
-                   // noteViewModel.updateNotePhoto( (NotePhotoItem) note );
+
 
 
                 }else{
                     String text = mNoteCheckEditText.getText().toString();
                     boolean isChecked = mNoteChecBox.isChecked();
-                    note = new NoteCheckItem(text, Constants.NOTE_CHECK_VIEW_TYPE, isChecked);
+                    note = new NoteCheckItem(text, isChecked);
+                    note.setBackgroundColor(color);
                     NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
                     noteViewModel.addNoteCheck((NoteCheckItem) note );
-                    //noteViewModel.updateNoteCheck( (NoteCheckItem) note );
+
                 }
-                note.setBackgroundColor( color );
 
-
-                intent.putExtra( Constants.NOTE, note );
-                setResult( RESULT_OK, intent );
                 finish();
             }
         } );

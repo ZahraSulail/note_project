@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         textNotes = new ArrayList<>();
         photoNotes = new ArrayList<>();
         checkNotes = new ArrayList<>();
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
 
         //Overriding itemClickListener
         mAdapter = new NoteAdapter( mItems, new ItemClickListener() {
@@ -98,32 +99,52 @@ public class MainActivity extends AppCompatActivity {
                      intent.putExtra( "note_position_key", position );
                      startActivityForResult(intent, Constants.NOTE_DETAILS);
                      break;
+
                      case Constants.NOTE__PHOTO_VIEW_TYPE:
                          intent = new Intent(MainActivity.this, NotePhotoDetailsActivity.class);
                          intent.putExtra( "note_photo_details", note  );
-                         //intent.putExtra( "note_phot_detais_1", (NotePhotoItem) note );
                          intent.putExtra( "note_photo_position_key", position );
                          startActivityForResult(intent,Constants.NOTE_PHOTO_DETAILS);
                          break;
+
                          case Constants.NOTE_CHECK_VIEW_TYPE:
                              intent = new Intent(MainActivity.this, NoteCheckDetailsActivity.class);
                              intent.putExtra( "note_check_details",  note  );
-                             //intent.putExtra( "note_check_detais_1", (NoteCheckItem) note );
                              intent.putExtra( "note_check_position_key", position );
                              startActivityForResult(intent, Constants.NOTE_CHECK_DETAILS);
-
                              break;
                  default:
                      throw new IllegalStateException( "Unexpected value: " + note);
              }
+
             }
         }, new ItemLongClickListener() {
             @Override
             public void onLongClickItem(int position) {
-                deleteItem(position);
+                //deleteItem(position);
+                Note note = mItems.get( position );
+                NoteViewModel noteViewModel1;
+                switch(note.getViewType()){
 
+                    case Constants.NOTE_VIEW_TYPE:
+                       noteViewModel.deleteNote(note);
+                       break;
+
+                    case NOTE_CHECK_VIEW_TYPE:
+                        noteViewModel.deleteNoteCheck((NoteCheckItem)note);
+                        break;
+
+                    case NOTE__PHOTO_VIEW_TYPE:
+                        noteViewModel.deleteNotePhoto((NotePhotoItem)note);
+                        break;
+
+
+                    default:
+                        throw new IllegalStateException( "Unexpected value: " + note.getViewType());
+                }
             }
         } );
+
         //Create ListLayoutManager object
         mListLayoutManager = new LinearLayoutManager( this);
 
@@ -144,68 +165,17 @@ public class MainActivity extends AppCompatActivity {
             }
         } );
 
-    /*
-     Call the observers functions
-     */
-      requestNote();
-      requestNoteCheckItem();
-      requestNotePhotoItem();
+        requestNote();
+        requestNoteCheckItem();
+        requestNotePhotoItem();
     }
 
     //AddNewNoteActivity intent
     public void addNewNoteActivity(){
         Intent intent = new Intent(this, AddNewNoteActivity.class );
-        startActivityForResult( intent, Constants.ADD_NOTE);
+        startActivity( intent);
     }
 
-    //onActivityResult to receive results from other activities
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult( requestCode, resultCode, data );
-        Note note;
-        if(requestCode == Constants.ADD_NOTE ){
-            if(resultCode == RESULT_OK && data != null  ){
-                 note = (Note) data.getSerializableExtra( NOTE);
-                 addItem( note);
-            }
-        }else{
-
-            if(requestCode == Constants.NOTE_DETAILS){
-                if(resultCode == RESULT_OK && data!= null){
-                    note = (Note) data.getSerializableExtra( NOTE );
-                 int index =  data.getIntExtra(  "not_postion_key", 0 );
-                 mItems.set(index,note);
-                 mAdapter.notifyDataSetChanged();
-                }
-            }else{
-                if(requestCode == Constants.NOTE_PHOTO_DETAILS){
-                    if(resultCode == RESULT_OK && data != null){
-                        note = (Note) data.getSerializableExtra( NOTE );
-                        int index = data.getIntExtra( "note_photo_position_key",  0 );
-                        mItems.set(index,note);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }else{
-
-                    if(requestCode == Constants.NOTE_CHECK_DETAILS){
-                        if(resultCode == RESULT_OK && data != null){
-                            note = (Note) data.getSerializableExtra( NOTE );
-                            int index = data.getIntExtra( "note_check_position_key", 0 );
-                            mItems.set(index,note);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    //Aaa item method
-    private void addItem( Note note){
-       mItems.add(note);
-       mAdapter.notifyDataSetChanged();
-
- }
 
     //overriding onCreateOptionMenu method
     @Override
@@ -219,13 +189,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()== R.id.action_view_list){
-           mRecyclerView.setLayoutManager(mListLayoutManager);
+           mRecyclerView.setLayoutManager(mGridtLayoutManager);
            item.setVisible(false);
            mMenu.findItem( R.id.action_grid ).setVisible(true);
            return true;
 
         }else if(item.getItemId()== R.id.action_grid){
-            mRecyclerView.setLayoutManager(mGridtLayoutManager);
+            mRecyclerView.setLayoutManager(mListLayoutManager);
             item.setVisible(false);
             mMenu.findItem( R.id.action_view_list ).setVisible(true);
             return true;
@@ -304,10 +274,13 @@ Request noteCheckItem data
 
     private void showData() {
         mItems.clear();
-        mItems.addAll( textNotes );
-        mItems.addAll( photoNotes );
-        mItems.addAll( checkNotes );
-        Collections.sort( mItems );
+        mItems.addAll(textNotes);
+        mItems.addAll(photoNotes);
+        mItems.addAll(checkNotes);
+        Collections.sort(mItems);
         mAdapter.notifyDataSetChanged();
     }
+
+
+
 }

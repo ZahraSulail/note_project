@@ -15,11 +15,12 @@ public class NoteCheckItem extends Note {
     private boolean isChecked;
 
     public NoteCheckItem(){
-        super();
+
     }
 
-    public NoteCheckItem(String text, int noteCheckViewType, boolean isChecked){
+    public NoteCheckItem(String text, boolean isChecked){
         super( text, Constants.NOTE_CHECK_VIEW_TYPE );
+        this.isChecked = isChecked;
     }
 
 

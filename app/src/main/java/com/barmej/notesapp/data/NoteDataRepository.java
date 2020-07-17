@@ -104,31 +104,53 @@ public class NoteDataRepository {
     }
 
     public LiveData<NotePhotoItem> getSinglePhotoNoteItem(int id) {
-        return mAppDatatbase.notePhotoItemDao().getNotePhotoItem( id );
+        return mAppDatatbase.notePhotoItemDao().getNotePhotoItem(id);
     }
 
-
+   // Add Note to Room
     public void addNote(Note note) {
         mAppDatatbase.noteDao().addNote(note);
     }
 
+    // Update Note
     public void updateNote(Note note){
-        mAppDatatbase.noteDao().updateNote( note );
+        mAppDatatbase.noteDao().updateNote(note);
     }
 
+    //Delete Note from Room
+    public void deleteNote(Note note){
+        mAppDatatbase.noteDao().deleteNote(note);
+
+    }
+
+    // Add NoteCheck to Room
     public void addNoteCheck(NoteCheckItem noteCheckItem){
-        mAppDatatbase.noteCheckItemDao().addNote( noteCheckItem );
+        mAppDatatbase.noteCheckItemDao().addNote(noteCheckItem);
     }
+
+    // Update NoteCheck
     public void updateNoteCheck(NoteCheckItem noteCheckItem){
-        mAppDatatbase.noteCheckItemDao().updateNote( noteCheckItem );
+        mAppDatatbase.noteCheckItemDao().updateNote(noteCheckItem);
     }
 
+    //Delete NoteCheck from Room
+    public void deleteNoteCheck(NoteCheckItem noteCheckItem){
+        mAppDatatbase.noteCheckItemDao().deleteNote(noteCheckItem);
+    }
+
+    // Add NotePhoto to Room
     public void addNotePhoto(NotePhotoItem notePhotItemm){
-        mAppDatatbase.notePhotoItemDao().addNote( notePhotItemm );
-
+        mAppDatatbase.notePhotoItemDao().addNote(notePhotItemm);
     }
+
+    // Updatee NotePhoto
     public void updateNotePhoto(NotePhotoItem notePhotoItem){
-        mAppDatatbase.notePhotoItemDao().updateNote( notePhotoItem );
+        mAppDatatbase.notePhotoItemDao().updateNote(notePhotoItem);
+    }
+
+    //Delete NotePhoto from Room
+    public void deleteNotePhoto(NotePhotoItem notePhotoItem){
+        mAppDatatbase.notePhotoItemDao().deleteNote(notePhotoItem);
     }
 }
 

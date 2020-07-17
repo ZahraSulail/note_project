@@ -22,6 +22,7 @@ import java.util.List;
 public class NoteDetailsActivity extends AppCompatActivity {
 
     private ActivityNoteDetailsBinding binding;
+    Note note;
     int position ;
 
     @Override
@@ -33,28 +34,24 @@ public class NoteDetailsActivity extends AppCompatActivity {
 
         //Intent to receive notes that need to edit
         Intent intent = getIntent();
-        Note note= (Note) intent.getSerializableExtra( "note_details" );
+        note= (Note) intent.getSerializableExtra( "note_details" );
         position = intent.getIntExtra( "note_position_key", 0 );
         binding.setNote( note );
-
-
         requestNote(note.getId());
 
     }
 
-    // press back button to send results after editting
+    @Override
     public void onBackPressed() {
-        Note note;
-        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
-        //noteViewModel.updateNote( note );
         String text = binding.noteEditText.getText().toString();
-        note = new Note( text, Constants.NOTE_VIEW_TYPE );
-        Intent intent = new Intent();
-        intent.putExtra( Constants.NOTE, note);
-        intent.putExtra( "note_position_key", position );
-        setResult(RESULT_OK, intent);
+        note.setText( text );
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
+        noteViewModel.updateNote(note);
         finish();
+        super.onBackPressed();
     }
+
+
 
     /*
 Request note data
@@ -64,8 +61,8 @@ Request note data
         noteViewModel.getNote(id).observe( this, new Observer<Note>() {
             @Override
             public void onChanged(Note notes) {
-               // binding.setNote( notes );
-                binding.setNote( notes );
+                NoteDetailsActivity.this.note = notes;
+                binding.setNote(notes);
             }
         } );
     }

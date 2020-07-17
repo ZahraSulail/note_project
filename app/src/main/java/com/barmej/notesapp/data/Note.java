@@ -1,6 +1,8 @@
 package com.barmej.notesapp.data;
 
 
+import com.barmej.notesapp.Constants;
+
 import java.io.Serializable;
 
 import androidx.lifecycle.LiveData;
@@ -24,14 +26,20 @@ public class Note implements Serializable, Comparable {
 
     private int backgroundColor;
 
-    public Note(){
+    public Note() {
 
+    }
+
+    public Note(String text){
+        this.text = text;
+        this.viewType = Constants.NOTE_VIEW_TYPE;
     }
 
     @Ignore
     public Note(String text, int viewType){
         this.text = text;
         this.viewType = viewType;
+        
     }
 
 

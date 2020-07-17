@@ -22,44 +22,38 @@ import com.barmej.notesapp.databinding.ActivityNoteCheckDetailsBinding;
 import java.util.List;
 
 public class NoteCheckDetailsActivity extends AppCompatActivity {
-    int position;
-    NoteCheckItem note;
-   private ActivityNoteCheckDetailsBinding binding;
+
+     int position;
+     Note note;
+     private ActivityNoteCheckDetailsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_note_check_details );
-        binding.setLifecycleOwner( this );
-       // binding.getRoot();
-
 
         //Intent to receive notes that need to edit
-        Intent intent = getIntent();
+         Intent intent = getIntent();
          note = (NoteCheckItem) intent.getSerializableExtra( "note_check_details");
-        //note = (Note) intent.getSerializableExtra( "note_check_detais_1" );
-        position = intent.getIntExtra( "note_check_position_key", 0 );
-        //binding.setNoteCheck( );
+         position = intent.getIntExtra( "note_check_position_key", 0 );
+         binding.setNoteCheck((NoteCheckItem) note );
 
+         // Calling requestNoteCheckItemMethod
         requestNoteCheckItem(note.getId());
-
     }
 
     // press back button to send results after editting
+    @Override
     public void onBackPressed() {
-
         String text = binding.checkNoteEditText.getText().toString();
-        boolean isChecked = binding.checkNoteCheckBox.isChecked();
         note.setText( text );
-        note.setChecked(isChecked);
-        Intent intent = new Intent();
-        intent.putExtra(  Constants.NOTE ,  note);
-        intent.putExtra( "note_check_position_key", position );
-        setResult(RESULT_OK, intent);
+        boolean isChecked = binding.checkNoteCheckBox.isChecked();
+        //note.setChecked(isChecked);
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
+        noteViewModel.updateNoteCheck((NoteCheckItem) note);
         finish();
+        super.onBackPressed();
     }
-
-
 
     /*
 Request noteCheckItem data
@@ -69,14 +63,10 @@ Request noteCheckItem data
         noteViewModel.getNoteCheckItem(id).observe( this, new Observer<NoteCheckItem>() {
             @Override
             public void onChanged(NoteCheckItem noteCheckItems) {
-                //mNoteCheckEditText.setText( noteCheckItems.getText() );
-                //boolean isChecked = mNoteCheckBox.isChecked();
-                 binding.setNoteCheck(noteCheckItems);
+                NoteCheckDetailsActivity.this.note = noteCheckItems;
+                binding.setNoteCheck(noteCheckItems);
 
             }
         } );
     }
-
-
-
 }

@@ -21,40 +21,39 @@ import com.barmej.notesapp.databinding.ActivityNotePhotoDetailsBinding;
 
 import java.util.List;
 
+import static com.barmej.notesapp.Activities.AddNewNoteActivity.index;
 import static com.barmej.notesapp.Activities.AddNewNoteActivity.photos;
 
 public class NotePhotoDetailsActivity extends AppCompatActivity {
 
     ActivityNotePhotoDetailsBinding binding;
-    NotePhotoItem note;
-
-
+    Note note;
     int position ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         binding =  binding = DataBindingUtil.setContentView(this, R.layout.activity_note_photo_details);
-        binding.setLifecycleOwner(this);
-        binding.getRoot();
+
         //Intent to receive notes that need to edit
-        Intent intent =  getIntent();
+         Intent intent =  getIntent();
          note = (NotePhotoItem) intent.getSerializableExtra( "note_photo_details");
          position = intent.getIntExtra( "note_photo_position_key", 0 );
-        // binding.setNotePhoto( note );
+         binding.setNotePhoto( (NotePhotoItem) note );
 
-        requestNotePhotoItem(note.getId());
+         requestNotePhotoItem(note.getId());
     }
 
+
     // press back button to send results after editting
+    @Override
     public void onBackPressed() {
-        Drawable imageResId = binding.photoImageView.getDrawable();
         String text = binding.photoNoteEditText.getText().toString();
-        note.setText( text );
-        Intent intent = new Intent();
-        intent.putExtra( Constants.NOTE ,  note);
-        intent.putExtra( "note_photo_position_key", position );
-        setResult(RESULT_OK, intent);
+        note.setText( text);
+        Drawable imageResId = binding.photoImageView.getDrawable();
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
+        noteViewModel.updateNotePhoto((NotePhotoItem) note);
         finish();
+        super.onBackPressed();
     }
 
     /*
@@ -65,9 +64,8 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
         noteViewModel.getNotePhotoItem(id).observe( this, new Observer<NotePhotoItem>() {
             @Override
             public void onChanged(NotePhotoItem notePhotoItem) {
-                //mNotePhotoEditText.setText(notePhotoItem.getText());
-                //mNotePhotoImageView.setImageResource( notePhotoItem.getImageResId());
-                //binding.setNotePhoto( notePhotoItem);
+                NotePhotoDetailsActivity.this.note = notePhotoItem;
+                binding.setNotePhoto(notePhotoItem);
 
             }
         } );

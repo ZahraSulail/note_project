@@ -13,11 +13,11 @@ public class NotePhotoItem extends Note {
      private int imageResId;
 
      public NotePhotoItem() {
-        super();
-     }
 
-     public NotePhotoItem(String text, int note_photoViewType, int photo){
-         super( text, Constants.NOTE__PHOTO_VIEW_TYPE );
+     }
+     public NotePhotoItem(String text, int photo){
+         super( text, Constants.NOTE__PHOTO_VIEW_TYPE);
+         this.imageResId = photo;
      }
 
 
