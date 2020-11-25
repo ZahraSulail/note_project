@@ -2,31 +2,31 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="note_photo"
-            type="com.barmej.notesapp.data.NotePhotoItem" />
+            type="com.barmej.notesapp.data.entities.NotePhotoItem" />
     </data>
-<LinearLayout
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/note_photo"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        imageRes="@{note_photo.imageResId}"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_photo"
-        />
-    <TextView
-        android:id="@+id/note_photo_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{note_photo.text}"
-        android:textSize="16sp"
-        android:padding="16dp"
-        />
+        android:orientation="vertical">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/note_photo"
+            imageUri="@{note_photo.photo}"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_photo" />
+
+        <TextView
+            android:id="@+id/note_photo_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@{note_photo.text}"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 </layout>

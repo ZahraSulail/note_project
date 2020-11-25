@@ -1,7 +1,6 @@
 package com.barmej.notesapp.data.database.dao;
 
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
 
 import java.util.List;
 

@@ -1,30 +1,24 @@
 package com.barmej.notesapp.Activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.barmej.notesapp.R;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.database.NoteViewModel;
+import com.barmej.notesapp.data.entities.Note;
+import com.barmej.notesapp.databinding.ActivityNoteCheckDetailsBinding;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Editable;
-import android.widget.CheckBox;
-import android.widget.EditText;
-
-import com.barmej.notesapp.Constants;
-import com.barmej.notesapp.R;
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
-import com.barmej.notesapp.data.NotePhotoItem;
-import com.barmej.notesapp.data.NoteViewModel;
-import com.barmej.notesapp.databinding.ActivityNoteCheckDetailsBinding;
-
-import java.util.List;
-
 public class NoteCheckDetailsActivity extends AppCompatActivity {
 
-     int position;
-     Note note;
+    int position;
+    Note note;
+    int noteCheckColor;
      private ActivityNoteCheckDetailsBinding binding;
 
     @Override
@@ -34,8 +28,9 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
 
         //Intent to receive notes that need to edit
          Intent intent = getIntent();
-         note = (NoteCheckItem) intent.getSerializableExtra( "note_check_details");
+         note = intent.getParcelableExtra( "note_check_details");
          position = intent.getIntExtra( "note_check_position_key", 0 );
+         //noteCheckColor = intent.getIntExtra( "note_check_color",0 );
          binding.setNoteCheck((NoteCheckItem) note );
 
          // Calling requestNoteCheckItemMethod
@@ -48,7 +43,7 @@ public class NoteCheckDetailsActivity extends AppCompatActivity {
         String text = binding.checkNoteEditText.getText().toString();
         note.setText( text );
         boolean isChecked = binding.checkNoteCheckBox.isChecked();
-        //note.setChecked(isChecked);
+        ((NoteCheckItem) note).setChecked(isChecked);
         final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
         noteViewModel.updateNoteCheck((NoteCheckItem) note);
         finish();

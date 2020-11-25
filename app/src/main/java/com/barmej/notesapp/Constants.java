@@ -12,4 +12,7 @@ public class Constants {
     public static final String NOTE = "NOTE";
     public static final int ADD_NOTE= 100;
 
+    public static final int PERMISSION_REQUEST_READ_STORAGE = 6;
+    public static final int REQUEST_GET_PHOTO = 7;
+
 }

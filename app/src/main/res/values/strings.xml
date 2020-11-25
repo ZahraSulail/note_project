@@ -13,4 +13,6 @@
     <string name="select_picture">select_picture</string>
     <string name="read_permission_neede_to_access_files">read_permission_neede_to_access_files</string>
     <string name="failed_to_get_image">failed_to_get_image</string>
+    <string name="photo_selected_error">خطآ في اختيار الصورة</string>
+    <string name="choose_photo">اختر صورة</string>
 </resources>

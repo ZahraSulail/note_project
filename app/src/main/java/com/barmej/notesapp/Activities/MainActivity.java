@@ -1,21 +1,8 @@
 package com.barmej.notesapp.Activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,24 +10,31 @@ import android.view.View;
 import com.barmej.notesapp.Constants;
 import com.barmej.notesapp.R;
 import com.barmej.notesapp.adapter.NoteAdapter;
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
-import com.barmej.notesapp.data.NotePhotoItem;
-import com.barmej.notesapp.data.NoteViewModel;
-import com.barmej.notesapp.data.database.dao.NoteCheckItemDao;
+import com.barmej.notesapp.data.database.NoteViewModel;
+import com.barmej.notesapp.data.entities.Note;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NotePhotoItem;
+import com.barmej.notesapp.data.entities.TextNote;
 import com.barmej.notesapp.listener.ItemClickListener;
 import com.barmej.notesapp.listener.ItemLongClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.barmej.notesapp.Constants.NOTE;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import static com.barmej.notesapp.Constants.NOTE_CHECK_VIEW_TYPE;
 import static com.barmej.notesapp.Constants.NOTE__PHOTO_VIEW_TYPE;
-import static java.lang.String.valueOf;
+
+;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,24 +60,25 @@ public class MainActivity extends AppCompatActivity {
 
     private Note note;
 
+
     //menu
     Menu mMenu;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_main);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
 
         // Find views by id's
-        mFloatingActionButton = findViewById(R.id.floating_button_add);
-        mRecyclerView = findViewById(R.id.recycler_view_photos);
+        mFloatingActionButton = findViewById( R.id.floating_button_add );
+        mRecyclerView = findViewById( R.id.recycler_view_photos );
         //Create ArrayList object
 
         mItems = new ArrayList<Note>();
         textNotes = new ArrayList<>();
         photoNotes = new ArrayList<>();
         checkNotes = new ArrayList<>();
-        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get( NoteViewModel.class );
 
         //Overriding itemClickListener
         mAdapter = new NoteAdapter( mItems, new ItemClickListener() {
@@ -92,30 +87,32 @@ public class MainActivity extends AppCompatActivity {
             public void onClickItem(int position) {
                 Note note = mItems.get( position );
                 Intent intent;
-             switch (note.getViewType()){
-                 case Constants.NOTE_VIEW_TYPE:
-                     intent = new Intent(MainActivity.this, NoteDetailsActivity.class);
-                     intent.putExtra( "note_details", note);
-                     intent.putExtra( "note_position_key", position );
-                     startActivityForResult(intent, Constants.NOTE_DETAILS);
-                     break;
 
-                     case Constants.NOTE__PHOTO_VIEW_TYPE:
-                         intent = new Intent(MainActivity.this, NotePhotoDetailsActivity.class);
-                         intent.putExtra( "note_photo_details", note  );
-                         intent.putExtra( "note_photo_position_key", position );
-                         startActivityForResult(intent,Constants.NOTE_PHOTO_DETAILS);
-                         break;
 
-                         case Constants.NOTE_CHECK_VIEW_TYPE:
-                             intent = new Intent(MainActivity.this, NoteCheckDetailsActivity.class);
-                             intent.putExtra( "note_check_details",  note  );
-                             intent.putExtra( "note_check_position_key", position );
-                             startActivityForResult(intent, Constants.NOTE_CHECK_DETAILS);
-                             break;
-                 default:
-                     throw new IllegalStateException( "Unexpected value: " + note);
-             }
+                switch (note.getViewType()) {
+                    case Constants.NOTE_VIEW_TYPE:
+                        intent = new Intent( MainActivity.this, NoteDetailsActivity.class );
+                        intent.putExtra( "note_details", note );
+                        intent.putExtra( "note_position_key", position );
+                        startActivityForResult( intent, Constants.NOTE_DETAILS );
+                        break;
+
+                    case Constants.NOTE__PHOTO_VIEW_TYPE:
+                        intent = new Intent( MainActivity.this, NotePhotoDetailsActivity.class );
+                        intent.putExtra( "note_photo_details", note );
+                        intent.putExtra( "note_photo_position_key", position );
+                        startActivityForResult( intent, Constants.NOTE_PHOTO_DETAILS );
+                        break;
+
+                    case Constants.NOTE_CHECK_VIEW_TYPE:
+                        intent = new Intent( MainActivity.this, NoteCheckDetailsActivity.class );
+                        intent.putExtra( "note_check_details", note );
+                        intent.putExtra( "note_check_position_key", position );
+                        startActivityForResult( intent, Constants.NOTE_CHECK_DETAILS );
+                        break;
+                    default:
+                        throw new IllegalStateException( "Unexpected value: " + note );
+                }
 
             }
         }, new ItemLongClickListener() {
@@ -124,38 +121,38 @@ public class MainActivity extends AppCompatActivity {
                 //deleteItem(position);
                 Note note = mItems.get( position );
                 NoteViewModel noteViewModel1;
-                switch(note.getViewType()){
+                switch (note.getViewType()) {
 
                     case Constants.NOTE_VIEW_TYPE:
-                       noteViewModel.deleteNote(note);
-                       break;
+                        noteViewModel.deleteNote( (TextNote) note );
+                        break;
 
                     case NOTE_CHECK_VIEW_TYPE:
-                        noteViewModel.deleteNoteCheck((NoteCheckItem)note);
+                        noteViewModel.deleteNoteCheck( (NoteCheckItem) note );
                         break;
 
                     case NOTE__PHOTO_VIEW_TYPE:
-                        noteViewModel.deleteNotePhoto((NotePhotoItem)note);
+                        noteViewModel.deleteNotePhoto( (NotePhotoItem) note );
                         break;
 
 
                     default:
-                        throw new IllegalStateException( "Unexpected value: " + note.getViewType());
+                        throw new IllegalStateException( "Unexpected value: " + note.getViewType() );
                 }
             }
         } );
 
         //Create ListLayoutManager object
-        mListLayoutManager = new LinearLayoutManager( this);
+        mListLayoutManager = new LinearLayoutManager( this );
 
         //Create GridLayoutManager object
-        mGridtLayoutManager = new GridLayoutManager(this, 2);
+        mGridtLayoutManager = new GridLayoutManager( this, 2 );
 
         //Set RecycelerView to ListLayoutManager as adefault
-        mRecyclerView.setLayoutManager( mListLayoutManager);
+        mRecyclerView.setLayoutManager( mListLayoutManager );
 
         //set the adpter to recyclerview
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter( mAdapter );
 
         //Overriding setOnClickListener of floatingButton to start AddNewNoteActivity
         findViewById( R.id.floating_button_add ).setOnClickListener( new View.OnClickListener() {
@@ -171,9 +168,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //AddNewNoteActivity intent
-    public void addNewNoteActivity(){
-        Intent intent = new Intent(this, AddNewNoteActivity.class );
-        startActivity( intent);
+    public void addNewNoteActivity() {
+        Intent intent = new Intent( this, AddNewNoteActivity.class );
+        startActivity( intent );
     }
 
 
@@ -188,16 +185,16 @@ public class MainActivity extends AppCompatActivity {
     //overriding onCreateOptionItemSelected method
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()== R.id.action_view_list){
-           mRecyclerView.setLayoutManager(mGridtLayoutManager);
-           item.setVisible(false);
-           mMenu.findItem( R.id.action_grid ).setVisible(true);
-           return true;
+        if (item.getItemId() == R.id.action_view_list) {
+            mRecyclerView.setLayoutManager( mGridtLayoutManager );
+            item.setVisible( false );
+            mMenu.findItem( R.id.action_grid ).setVisible( true );
+            return true;
 
-        }else if(item.getItemId()== R.id.action_grid){
-            mRecyclerView.setLayoutManager(mListLayoutManager);
-            item.setVisible(false);
-            mMenu.findItem( R.id.action_view_list ).setVisible(true);
+        } else if (item.getItemId() == R.id.action_grid) {
+            mRecyclerView.setLayoutManager( mListLayoutManager );
+            item.setVisible( false );
+            mMenu.findItem( R.id.action_view_list ).setVisible( true );
             return true;
 
         }
@@ -205,13 +202,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Delete Item Dialog options
-    private void deleteItem(final int position){
-        AlertDialog alertDialog = new AlertDialog.Builder( this ).setMessage( R.string.delete_confirmation).
+    private void deleteItem(final int position) {
+        AlertDialog alertDialog = new AlertDialog.Builder( this ).setMessage( R.string.delete_confirmation ).
                 setPositiveButton( R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mItems.remove(position);
-                        mAdapter.notifyItemRemoved(position );
+                        mItems.remove( position );
+                        mAdapter.notifyItemRemoved( position );
 
                     }
                 } )
@@ -228,15 +225,15 @@ public class MainActivity extends AppCompatActivity {
     /*
 Request note data
  */
-    private void requestNote(){
-        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
-        noteViewModel.getAllNoteLiveData().observe( this, new Observer<List<Note>>() {
+    private void requestNote() {
+        final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get( NoteViewModel.class );
+        noteViewModel.getAllNoteLiveData().observe( this, new Observer<List<TextNote>>() {
 
             @Override
-            public void onChanged(List<Note> notes) {
-                    textNotes.clear();
-                    textNotes.addAll(notes);
-                    showData();
+            public void onChanged(List<TextNote> notes) {
+                textNotes.clear();
+                textNotes.addAll( notes );
+                showData();
             }
         } );
 
@@ -245,13 +242,13 @@ Request note data
     /*
 Request noteCheckItem data
 */
-    private void requestNoteCheckItem(){
-        NoteViewModel noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+    private void requestNoteCheckItem() {
+        NoteViewModel noteViewModel = ViewModelProviders.of( this ).get( NoteViewModel.class );
         noteViewModel.getAllNoteCheckItemLiveData().observe( this, new Observer<List<NoteCheckItem>>() {
             @Override
             public void onChanged(List<NoteCheckItem> noteCheckItems) {
                 checkNotes.clear();
-                checkNotes.addAll(noteCheckItems);
+                checkNotes.addAll( noteCheckItems );
                 showData();
             }
         } );
@@ -260,13 +257,13 @@ Request noteCheckItem data
     /*
      Request notePhotItem data
   */
-    private void requestNotePhotoItem(){
+    private void requestNotePhotoItem() {
         NoteViewModel noteViewModel = ViewModelProviders.of( this ).get( NoteViewModel.class );
         noteViewModel.getAllNotePhotoItemLiveData().observe( this, new Observer<List<NotePhotoItem>>() {
             @Override
             public void onChanged(List<NotePhotoItem> notePhotoItems) {
                 photoNotes.clear();
-                photoNotes.addAll(notePhotoItems);
+                photoNotes.addAll( notePhotoItems );
                 showData();
             }
         } );
@@ -274,13 +271,12 @@ Request noteCheckItem data
 
     private void showData() {
         mItems.clear();
-        mItems.addAll(textNotes);
-        mItems.addAll(photoNotes);
-        mItems.addAll(checkNotes);
-        Collections.sort(mItems);
+        mItems.addAll( textNotes );
+        mItems.addAll( photoNotes );
+        mItems.addAll( checkNotes );
+        Collections.sort( mItems );
         mAdapter.notifyDataSetChanged();
     }
-
 
 
 }

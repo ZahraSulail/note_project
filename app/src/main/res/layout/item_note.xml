@@ -4,7 +4,7 @@
     <data>
         <variable
             name="note"
-            type="com.barmej.notesapp.data.Note" />
+            type="com.barmej.notesapp.data.entities.Note" />
 
     </data>
 <LinearLayout

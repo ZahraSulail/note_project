@@ -1,22 +1,17 @@
 package com.barmej.notesapp.adapter;
 
-import android.net.Uri;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.barmej.notesapp.Constants;
 import com.barmej.notesapp.R;
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
-import com.barmej.notesapp.data.NotePhotoItem;
-
+import com.barmej.notesapp.data.entities.Note;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NotePhotoItem;
+import com.barmej.notesapp.data.entities.TextNote;
 import com.barmej.notesapp.databinding.ItemNoteBinding;
 import com.barmej.notesapp.databinding.ItemNoteCheckBinding;
 import com.barmej.notesapp.databinding.ItemNotePhotoBinding;
@@ -82,7 +77,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (note != null) {
             switch (note.getViewType()) {
                 case (Constants.NOTE_VIEW_TYPE):
-                    ((NoteViewHolder) holder).bind( note );
+                    ((NoteViewHolder) holder).bind( (TextNote) note );
                     break;
                 case(Constants.NOTE_CHECK_VIEW_TYPE):
                     ((NoteChecItemViewHolder) holder).bind( (NoteCheckItem) note );
@@ -200,7 +195,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    position=   getAdapterPosition();
+                    position = getAdapterPosition();
                     mItemClickListener.onClickItem(position);
 
                 }
@@ -208,13 +203,14 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnLongClickListener( new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    position=   getAdapterPosition();
+                    position = getAdapterPosition();
                     mItemLongClickListener.onLongClickItem( position );
                     return true;
                 }
             } );
         }
         void bind(NotePhotoItem notePhotoItem){
+            System.out.println("Note URI:" + notePhotoItem.getPhoto().toString());
             notePhotoBinding.setNotePhoto(notePhotoItem);
         }
     }

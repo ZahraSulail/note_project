@@ -2,18 +2,22 @@ package com.barmej.notesapp.data.database;
 
 import android.content.Context;
 
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
-import com.barmej.notesapp.data.NotePhotoItem;
 import com.barmej.notesapp.data.database.dao.NoteCheckItemDao;
 import com.barmej.notesapp.data.database.dao.NoteDao;
 import com.barmej.notesapp.data.database.dao.NotePhotoItemDao;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NotePhotoItem;
+import com.barmej.notesapp.data.entities.TextNote;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-@Database(entities = {Note.class, NoteCheckItem.class, NotePhotoItem.class}, version = 1, exportSchema = false)
+import androidx.room.TypeConverters;
+
+@Database(entities = { TextNote.class, NoteCheckItem.class, NotePhotoItem.class}, version = 2, exportSchema = false)
+@TypeConverters( {UriConverter.class} )
 public abstract class AppDatabase extends RoomDatabase {
+
 
     private static final Object LOCK = new Object();
     private static AppDatabase sInstance;
@@ -26,7 +30,9 @@ public abstract class AppDatabase extends RoomDatabase {
                     sInstance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class,
                             DATABASE_NAME) // TODO: remove on production
-                            .allowMainThreadQueries().build();
+                            .allowMainThreadQueries()
+                            .fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }

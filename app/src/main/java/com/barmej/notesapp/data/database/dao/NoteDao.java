@@ -1,7 +1,6 @@
 package com.barmej.notesapp.data.database.dao;
 
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
+import com.barmej.notesapp.data.entities.TextNote;
 
 import java.util.List;
 
@@ -17,19 +16,19 @@ import androidx.room.Update;
 public interface NoteDao {
 
     @Query( "SELECT * FROM note WHERE id == :id" )
-    LiveData<Note> getNote(int id);
+    LiveData<TextNote> getNote(int id);
 
     @Query( "SELECT * FROM note " )
-    LiveData<List<Note>> getAllNotes();
+    LiveData<List<TextNote>> getAllNotes();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long addNote(Note note);
+    long addNote(TextNote note);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateNote(Note note);
+    void updateNote(TextNote note);
 
     @Delete
-    void deleteNote(Note note);
+    void deleteNote(TextNote note);
 
 
 

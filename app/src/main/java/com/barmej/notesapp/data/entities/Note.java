@@ -1,23 +1,20 @@
-package com.barmej.notesapp.data;
+package com.barmej.notesapp.data.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.barmej.notesapp.Constants;
 
-import java.io.Serializable;
-
-import androidx.lifecycle.LiveData;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-//Super class Note
 
-@Entity(tableName = "note")
-public class Note implements Serializable, Comparable {
+
+public abstract class Note implements Parcelable, Comparable {
     /*
     Create a primary key for not table
      */
-   @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     private String text;
@@ -39,11 +36,31 @@ public class Note implements Serializable, Comparable {
     public Note(String text, int viewType){
         this.text = text;
         this.viewType = viewType;
-        
+
     }
 
 
-//setter and getter methods
+    //setter and getter methods
+
+    protected Note(Parcel in) {
+        id = in.readInt();
+        text = in.readString();
+        viewType = in.readInt();
+        backgroundColor = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt( id );
+        dest.writeString( text );
+        dest.writeInt( viewType );
+        dest.writeInt( backgroundColor );
+    }
 
     public void setId(int id){
         this.id = id;
@@ -81,4 +98,6 @@ public class Note implements Serializable, Comparable {
     public int compareTo(Object o) {
         return this.id > ((Note)o).getId() ? 1 : 0;
     }
+
+
 }

@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="note_photo"
-            type="com.barmej.notesapp.data.NotePhotoItem" />
+            type="com.barmej.notesapp.data.entities.NotePhotoItem" />
 
     </data>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/blue">
 
-    <ImageView
-        imageRes="@{note_photo.imageResId}"
-        android:id="@+id/photoImageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_photo" />
-
-    <EditText
-        android:id="@+id/photoNoteEditText"
+    <RelativeLayout
+        android:id="@+id/note_photo_detais_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/photoImageView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        android:text="@{note_photo.text}"
-        android:gravity="top"
-        android:hint="@string/add_note_text"
-        android:padding="16dp" />
+        android:background="@color/blue">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/photoImageView"
+            imageUri="@{note_photo.photo}"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_photo" />
+
+        <EditText
+            android:id="@+id/photoNoteEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photoImageView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:hint="@string/add_note_text"
+            android:padding="16dp"
+            android:text="@{note_photo.text}" />
+
+    </RelativeLayout>
 </layout>

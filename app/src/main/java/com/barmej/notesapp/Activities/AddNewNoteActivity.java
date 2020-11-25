@@ -1,8 +1,10 @@
 package com.barmej.notesapp.Activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,32 +12,38 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.barmej.notesapp.Constants;
 import com.barmej.notesapp.R;
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
-import com.barmej.notesapp.data.NotePhotoItem;
-import com.barmej.notesapp.data.NoteViewModel;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NotePhotoItem;
+import com.barmej.notesapp.data.database.NoteViewModel;
+import com.barmej.notesapp.data.entities.Note;
+import com.barmej.notesapp.data.entities.TextNote;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 public class AddNewNoteActivity extends AppCompatActivity {
 
+    private ConstraintLayout mConstraintLayout;
     //ImageView variable
-    ImageView mImageView;
+    ImageView mPhotoImageView;
     int color;
+    Uri mSelectedPhotoUri;
+
+    private boolean mReadStoragePermissionGranted;
 
     //CheckBox variable
     private CheckBox mNoteChecBox;
@@ -92,13 +100,23 @@ public class AddNewNoteActivity extends AppCompatActivity {
         mNoteCardView = findViewById( R.id.cardViewNote );
         mNoteCheckCardView = findViewById( R.id.cardViewCheckNote );
         mPhotoCardView = findViewById( R.id.cardViewPhoto );
-        mImageView = findViewById( R.id.photoImageView);
+        mPhotoImageView = findViewById( R.id.photoImageView);
         mNoteChecBox = findViewById( R.id.checkNoteCheckBox );
         mNoteEditText = findViewById( R.id.noteEditText );
         mNoteCheckEditText = findViewById( R.id.checkNoteEditText );
         mPhotNoteEditText = findViewById( R.id.photoNoteEditText );
         MaterialButton mAddButton = findViewById( R.id.button_submit );
+        mConstraintLayout = findViewById( R.id.add_note_constraint_layout );
 
+        /*
+          click on image to pick image from device gallery
+         */
+        mPhotoImageView.setOnClickListener( new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 requestStoragePermission();
+             }
+         } );
 
         //noteRadioButton setOnChangeListener method to view noteCrdView
         noteRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
@@ -180,25 +198,28 @@ public class AddNewNoteActivity extends AppCompatActivity {
             }
         } );
 
-        //addButton setOnClickListener to sendBack data from AddNewNoteActivity to MainActivity
+        /*
+          addButton setOnClickListener to sendBack data from AddNewNoteActivity to MainActivity
+         */
         mAddButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                Note note;
+               Note note;
 
                 if(noteRadioButton.isChecked()) {
                     String text = mNoteEditText.getText().toString();
-                    note = new Note(text);
+                    note = new TextNote(text);
                     note.setBackgroundColor(color);
                     NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
-                    noteViewModel.addNote( note );
+                    noteViewModel.addNote( (TextNote) note );
 
                 }else if(notePhotoRadioButton.isChecked()) {
 
                     String text = mPhotNoteEditText.getText().toString();
-                    note = new NotePhotoItem( text, photos[index] );
+
+                    note = new NotePhotoItem( text, mSelectedPhotoUri );
                     note.setBackgroundColor(color);
                     NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
                     noteViewModel.addNotePhoto((NotePhotoItem) note );
@@ -220,22 +241,57 @@ public class AddNewNoteActivity extends AppCompatActivity {
         } );
     }
 
-    //select image method
-     public void selectImage(View view){
-        Random mRandom = new Random();
-        index = mRandom.nextInt(photos.length);
-        imageDrawable();
-     }
 
-     //set image drawable
-    public void imageDrawable(){
+   private void requestStoragePermission(){
+        mReadStoragePermissionGranted = false;
+       if (ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED) {
+           mReadStoragePermissionGranted = true;
+           selectPhotoIntent();
+       } else {
+           ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.PERMISSION_REQUEST_READ_STORAGE );
 
-      Drawable imageResId = ContextCompat.getDrawable(this, photos[index]);
-      mImageView.setImageDrawable( imageResId);
+       }
+   }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult( requestCode, permissions, grantResults );
+        if(requestCode == Constants.PERMISSION_REQUEST_READ_STORAGE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                selectPhotoIntent();
+            }else{
+                Toast.makeText(this, R.string.read_permission_neede_to_access_files, Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult( requestCode, resultCode, data );
+        if(requestCode == Constants.REQUEST_GET_PHOTO){
+            if(resultCode == RESULT_OK ){
+                try{
+                    mSelectedPhotoUri = data.getData();
+                    mPhotoImageView.setImageURI( mSelectedPhotoUri );
 
+                }catch (Exception e){
+                    Snackbar.make( mConstraintLayout, R.string.photo_selected_error, Snackbar.LENGTH_LONG ).show();
+                }
+
+
+            }
+        }
     }
+
+    private void selectPhotoIntent(){
+        Intent intent = new Intent( Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory( Intent.CATEGORY_OPENABLE);
+        intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION );
+        intent.setType("image/*");
+        startActivityForResult( Intent.createChooser( intent,  getString( R.string.choose_photo)), Constants.REQUEST_GET_PHOTO );
+    }
+}
 
 
 

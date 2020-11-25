@@ -1,29 +1,27 @@
 package com.barmej.notesapp.Activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.barmej.notesapp.R;
+import com.barmej.notesapp.data.database.NoteViewModel;
+import com.barmej.notesapp.data.entities.Note;
+import com.barmej.notesapp.data.entities.TextNote;
+import com.barmej.notesapp.databinding.ActivityNoteDetailsBinding;
+
+import org.w3c.dom.Text;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.EditText;
-
-import com.barmej.notesapp.Constants;
-import com.barmej.notesapp.R;
-import com.barmej.notesapp.data.Note;
-import com.barmej.notesapp.data.NoteCheckItem;
-import com.barmej.notesapp.data.NotePhotoItem;
-import com.barmej.notesapp.data.NoteViewModel;
-import com.barmej.notesapp.databinding.ActivityNoteDetailsBinding;
-
-import java.util.List;
-
 public class NoteDetailsActivity extends AppCompatActivity {
 
     private ActivityNoteDetailsBinding binding;
-    Note note;
+    TextNote note;
     int position ;
+    int noteColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +30,15 @@ public class NoteDetailsActivity extends AppCompatActivity {
         binding.setLifecycleOwner( this );
 
 
+
+
         //Intent to receive notes that need to edit
+
         Intent intent = getIntent();
-        note= (Note) intent.getSerializableExtra( "note_details" );
+        note=  intent.getParcelableExtra( "note_details" );
         position = intent.getIntExtra( "note_position_key", 0 );
-        binding.setNote( note );
+        //noteColor = intent.getIntExtra( "note_color", 0 );
+        binding.setNote( note);
         requestNote(note.getId());
 
     }
@@ -58,9 +60,9 @@ Request note data
 */
     private void requestNote(int id){
         final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get(NoteViewModel.class);
-        noteViewModel.getNote(id).observe( this, new Observer<Note>() {
+        noteViewModel.getNote(id).observe( this, new Observer<TextNote>() {
             @Override
-            public void onChanged(Note notes) {
+            public void onChanged(TextNote notes) {
                 NoteDetailsActivity.this.note = notes;
                 binding.setNote(notes);
             }

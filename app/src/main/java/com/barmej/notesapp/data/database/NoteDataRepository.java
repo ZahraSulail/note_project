@@ -1,8 +1,10 @@
-package com.barmej.notesapp.data;
+package com.barmej.notesapp.data.database;
 
 import android.content.Context;
 
-import com.barmej.notesapp.data.database.AppDatabase;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NotePhotoItem;
+import com.barmej.notesapp.data.entities.TextNote;
 
 import java.util.List;
 
@@ -53,15 +55,15 @@ public class NoteDataRepository {
           /*
           @return LiveData object to be notified when data changed
            */
-        public LiveData<Note> getNote(int id){
+        public LiveData<TextNote> getNote(int id){
             // Get LiveData object from database using Room
-            final LiveData<Note> noteLiveData = mAppDatatbase.noteDao().getNote(id);
+            final LiveData<TextNote> noteLiveData = mAppDatatbase.noteDao().getNote(id);
             return noteLiveData;
         }
 
-    public LiveData<List<Note>> getAllNote(){
+    public LiveData<List<TextNote>> getAllNote(){
         // Get LiveData object from database using Room
-        final LiveData<List<Note>> allNotesLiveData = mAppDatatbase.noteDao().getAllNotes();
+        final LiveData<List<TextNote>> allNotesLiveData = mAppDatatbase.noteDao().getAllNotes();
         return allNotesLiveData;
     }
 
@@ -108,17 +110,17 @@ public class NoteDataRepository {
     }
 
    // Add Note to Room
-    public void addNote(Note note) {
+    public void addNote(TextNote note) {
         mAppDatatbase.noteDao().addNote(note);
     }
 
     // Update Note
-    public void updateNote(Note note){
+    public void updateNote(TextNote note){
         mAppDatatbase.noteDao().updateNote(note);
     }
 
     //Delete Note from Room
-    public void deleteNote(Note note){
+    public void deleteNote(TextNote note){
         mAppDatatbase.noteDao().deleteNote(note);
 
     }

@@ -1,12 +1,16 @@
-package com.barmej.notesapp.data;
+package com.barmej.notesapp.data.database;
 
 import android.app.Application;
+
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NotePhotoItem;
+import com.barmej.notesapp.data.entities.TextNote;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
-import java.util.List;
 
 /**
  * ViewModel class that hold data requests and temporary that survive configuration changes
@@ -21,7 +25,7 @@ public class NoteViewModel extends AndroidViewModel {
     /**
      * LiveData object to wrap Note  data
      */
-    private static LiveData<List<Note>> mNoteLiveData;
+    private static LiveData<List<TextNote>> mNoteLiveData;
 
     /**
      * LiveData object to wrap NoteCheckItem data
@@ -57,17 +61,17 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     /*
-        Nine methods required to add update and delete deferent notes
+        Nine methods required to add update and delete deferent notes to Room Database
      */
-    public void addNote(Note note) {
+    public void addNote(TextNote note) {
         mRepository.addNote( note );
     }
 
-    public void updateNote(Note note){
+    public void updateNote(TextNote note){
         mRepository.updateNote( note );
     }
 
-    public void deleteNote(Note note){
+    public void deleteNote(TextNote note){
         mRepository.deleteNote(note);
     }
 
@@ -102,7 +106,7 @@ public class NoteViewModel extends AndroidViewModel {
      *
      * @return A wrapper LiveData object contains the note
      */
-    public LiveData<List<Note>> getAllNoteLiveData() {
+    public LiveData<List<TextNote>> getAllNoteLiveData() {
         return mNoteLiveData;
     }
 
@@ -127,7 +131,7 @@ public class NoteViewModel extends AndroidViewModel {
     /*
      Get a single note in NoteDetailsActivity
      */
-    public LiveData<Note> getNote(int id){
+    public LiveData<TextNote> getNote(int id){
         return mRepository.getNote( id);
     }
 
