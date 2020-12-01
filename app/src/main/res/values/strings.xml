@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Notes App</string>
+    <string name="app_name">تطبيق المفكرة</string>
     <string name="add_new_item_description">يمكنك  إضافة ملاحظة إلى القائمة و اختيار نوع ولون الملاحظة.</string>
     <string name="add">اضافة</string>
     <string name="add_note_text">أضف ملاحظة</string>
@@ -15,4 +15,7 @@
     <string name="failed_to_get_image">failed_to_get_image</string>
     <string name="photo_selected_error">خطآ في اختيار الصورة</string>
     <string name="choose_photo">اختر صورة</string>
+    <string name="note_shouldnot_be_empty">لا تترك الحقل فارغا</string>
+    <string name="note_shouldnot_be_empty_and_an_image_required">لا تترك الحقل فارغا و ادخل صورة</string>
+
 </resources>

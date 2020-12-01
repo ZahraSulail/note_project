@@ -17,8 +17,9 @@ public class NotePhotoItem extends Note {
 
 
      public NotePhotoItem() {
-
+        super();
      }
+
      public NotePhotoItem(String text, Uri photo){
          super( text, Constants.NOTE__PHOTO_VIEW_TYPE);
          this.photo= photo;

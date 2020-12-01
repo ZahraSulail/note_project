@@ -2,10 +2,12 @@
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#80868b</color>
-    <color name="colorAccent">#E91E63</color>
+    <color name="colorAccent">#a8acb0</color>
 
-    <color name="red">#dc544b</color>
-    <color name="blue">#e1f5fd</color>
-    <color name="yellow">#fec130</color>
+    <color name="red">#FF3D00</color>
+    <color name="blue">#C5EEFB</color>
+    <color name="yellow">#FFC400</color>
+    <color name="add_button_color">#f498ad</color>
+    <color name="noteTextColor">#010203</color>
 
 </resources>

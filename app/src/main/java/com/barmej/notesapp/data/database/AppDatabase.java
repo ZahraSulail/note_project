@@ -14,7 +14,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = { TextNote.class, NoteCheckItem.class, NotePhotoItem.class}, version = 2, exportSchema = false)
+@Database(entities = { TextNote.class, NoteCheckItem.class, NotePhotoItem.class}, version = 3, exportSchema = false)
 @TypeConverters( {UriConverter.class} )
 public abstract class AppDatabase extends RoomDatabase {
 

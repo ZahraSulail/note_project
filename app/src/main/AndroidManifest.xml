@@ -11,11 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.NoteCheckDetailsActivity"></activity>
-        <activity android:name=".Activities.NotePhotoDetailsActivity" />
-        <activity android:name=".Activities.NoteDetailsActivity" />
-        <activity android:name=".Activities.AddNewNoteActivity" />
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".activities.NoteCheckDetailsActivity"></activity>
+        <activity android:name=".activities.NotePhotoDetailsActivity" />
+        <activity android:name=".activities.NoteDetailsActivity" />
+        <activity android:name=".activities.AddNewNoteActivity" android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -5,12 +5,11 @@ import android.os.Parcelable;
 
 import com.barmej.notesapp.Constants;
 
-import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
-public abstract class Note implements Parcelable, Comparable {
+public abstract class Note implements Parcelable, Comparable<Note> {
     /*
     Create a primary key for not table
      */
@@ -23,20 +22,23 @@ public abstract class Note implements Parcelable, Comparable {
 
     private int backgroundColor;
 
-    public Note() {
+    private long addTime;
 
+    public Note() {
+        this.addTime = System.currentTimeMillis();
     }
 
     public Note(String text){
         this.text = text;
         this.viewType = Constants.NOTE_VIEW_TYPE;
+        this.addTime = System.currentTimeMillis();
     }
 
     @Ignore
     public Note(String text, int viewType){
         this.text = text;
         this.viewType = viewType;
-
+        this.addTime = System.currentTimeMillis();
     }
 
 
@@ -47,6 +49,7 @@ public abstract class Note implements Parcelable, Comparable {
         text = in.readString();
         viewType = in.readInt();
         backgroundColor = in.readInt();
+        addTime = in.readLong();
     }
 
     @Override
@@ -60,6 +63,7 @@ public abstract class Note implements Parcelable, Comparable {
         dest.writeString( text );
         dest.writeInt( viewType );
         dest.writeInt( backgroundColor );
+        dest.writeLong( addTime );
     }
 
     public void setId(int id){
@@ -94,10 +98,20 @@ public abstract class Note implements Parcelable, Comparable {
         return backgroundColor;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return this.id > ((Note)o).getId() ? 1 : 0;
+    public void setAddTime(long addTime) {
+        this.addTime = addTime;
     }
+
+    public long getAddTime() {
+        return addTime;
+    }
+
+    @Override
+    public int compareTo(Note o) {
+        return Long.compare( addTime, o.getAddTime() );
+    }
+
+
 
 
 }

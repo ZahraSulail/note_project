@@ -1,4 +1,4 @@
-package com.barmej.notesapp.Activities;
+package com.barmej.notesapp.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,10 +16,10 @@ import android.widget.Toast;
 
 import com.barmej.notesapp.Constants;
 import com.barmej.notesapp.R;
-import com.barmej.notesapp.data.entities.NoteCheckItem;
-import com.barmej.notesapp.data.entities.NotePhotoItem;
 import com.barmej.notesapp.data.database.NoteViewModel;
 import com.barmej.notesapp.data.entities.Note;
+import com.barmej.notesapp.data.entities.NoteCheckItem;
+import com.barmej.notesapp.data.entities.NotePhotoItem;
 import com.barmej.notesapp.data.entities.TextNote;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -40,9 +40,20 @@ public class AddNewNoteActivity extends AppCompatActivity {
     private ConstraintLayout mConstraintLayout;
     //ImageView variable
     ImageView mPhotoImageView;
+
+    /*
+     integer color variable to set not color
+     */
     int color;
+
+    /*
+     photoUri variable
+     */
     Uri mSelectedPhotoUri;
 
+    /*
+      read storage permission granted
+     */
     private boolean mReadStoragePermissionGranted;
 
     //CheckBox variable
@@ -57,7 +68,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
     private RadioButton noteRadioButton;
     private RadioButton notePhotoRadioButton;
     private RadioButton noteCheckRadioButton;
-    private  RadioButton redRadioButton;
+    private RadioButton redRadioButton;
     private RadioButton blueRadioButton;
     private RadioButton yellowRadioButton;
 
@@ -69,38 +80,26 @@ public class AddNewNoteActivity extends AppCompatActivity {
     //ArrayList variable
     private ArrayList<Note> mItems;
 
-    //integer Photo ArrayList
-    public static final int [] photos = {
-            R.drawable.note,
-            R.drawable.note_1,
-            R.drawable.note_2,
-            R.drawable.note_3,
-            R.drawable.note_4,
-   };
-
-    //int index
-    public static int index = -1;
+    //Note object
     private Note note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView(R.layout.activity_add_new_note);
+        setContentView( R.layout.activity_add_new_note );
 
 
-        //FindVies by Id's
+        //FindViews by Id's
         noteRadioButton = findViewById( R.id.note_radioButton );
         noteCheckRadioButton = findViewById( R.id.note_chek_radioButton );
         notePhotoRadioButton = findViewById( R.id.note_photo_radioButton );
         redRadioButton = findViewById( R.id.radioButton_red );
         blueRadioButton = findViewById( R.id.radioButton_blue );
         yellowRadioButton = findViewById( R.id.radioButton_yellow );
-
-
         mNoteCardView = findViewById( R.id.cardViewNote );
         mNoteCheckCardView = findViewById( R.id.cardViewCheckNote );
         mPhotoCardView = findViewById( R.id.cardViewPhoto );
-        mPhotoImageView = findViewById( R.id.photoImageView);
+        mPhotoImageView = findViewById( R.id.photoImageView );
         mNoteChecBox = findViewById( R.id.checkNoteCheckBox );
         mNoteEditText = findViewById( R.id.noteEditText );
         mNoteCheckEditText = findViewById( R.id.checkNoteEditText );
@@ -112,49 +111,49 @@ public class AddNewNoteActivity extends AppCompatActivity {
           click on image to pick image from device gallery
          */
         mPhotoImageView.setOnClickListener( new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 requestStoragePermission();
-             }
-         } );
+            @Override
+            public void onClick(View v) {
+                requestStoragePermission();
+            }
+        } );
 
         //noteRadioButton setOnChangeListener method to view noteCrdView
         noteRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mNoteCardView.setVisibility( View.VISIBLE );
-                    mNoteCheckCardView.setVisibility( View.INVISIBLE );
-                    mPhotoCardView.setVisibility( View.INVISIBLE );
-                }
-            }
-        }
+                                                        @Override
+                                                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                            if (isChecked) {
+                                                                mNoteCardView.setVisibility( View.VISIBLE );
+                                                                mNoteCheckCardView.setVisibility( View.INVISIBLE );
+                                                                mPhotoCardView.setVisibility( View.INVISIBLE );
+                                                            }
+                                                        }
+                                                    }
         );
 
         //noteCheckRadioButton setOnChangeListener method to view noteCheckCardView
         noteCheckRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mNoteCheckCardView.setVisibility( View.VISIBLE );
-                    mPhotoCardView.setVisibility( View.INVISIBLE );
-                    mNoteCardView.setVisibility( View.INVISIBLE );
-                }
-            }
+                                                             @Override
+                                                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                                 if (isChecked) {
+                                                                     mNoteCheckCardView.setVisibility( View.VISIBLE );
+                                                                     mPhotoCardView.setVisibility( View.INVISIBLE );
+                                                                     mNoteCardView.setVisibility( View.INVISIBLE );
+                                                                 }
+                                                             }
                                                          }
         );
 
         //notePhotoRadioButton setOnChangeListener method to view notePhotoCardView
         notePhotoRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mPhotoCardView.setVisibility( View.VISIBLE );
-                    mNoteCardView.setVisibility( View.INVISIBLE );
-                    mNoteCheckCardView.setVisibility( View.INVISIBLE );
-                }
-            }
-        }
+                                                             @Override
+                                                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                                 if (isChecked) {
+                                                                     mPhotoCardView.setVisibility( View.VISIBLE );
+                                                                     mNoteCardView.setVisibility( View.INVISIBLE );
+                                                                     mNoteCheckCardView.setVisibility( View.INVISIBLE );
+                                                                 }
+                                                             }
+                                                         }
 
         );
 
@@ -162,7 +161,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
         redRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     color = Color.RED;
 
                     mPhotoCardView.setCardBackgroundColor( Color.RED );
@@ -176,10 +175,10 @@ public class AddNewNoteActivity extends AppCompatActivity {
         blueRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     color = Color.BLUE;
-                    mPhotoCardView.setCardBackgroundColor( Color.BLUE);
-                    mNoteCardView.setCardBackgroundColor( Color.BLUE);
+                    mPhotoCardView.setCardBackgroundColor( Color.BLUE );
+                    mNoteCardView.setCardBackgroundColor( Color.BLUE );
                     mNoteCheckCardView.setCardBackgroundColor( Color.BLUE );
                 }
             }
@@ -189,10 +188,10 @@ public class AddNewNoteActivity extends AppCompatActivity {
         yellowRadioButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     color = Color.YELLOW;
                     mPhotoCardView.setCardBackgroundColor( Color.YELLOW );
-                    mNoteCardView.setCardBackgroundColor( Color.YELLOW);
+                    mNoteCardView.setCardBackgroundColor( Color.YELLOW );
                     mNoteCheckCardView.setCardBackgroundColor( Color.YELLOW );
                 }
             }
@@ -205,77 +204,99 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
-               Note note;
-
-                if(noteRadioButton.isChecked()) {
-                    String text = mNoteEditText.getText().toString();
-                    note = new TextNote(text);
-                    note.setBackgroundColor(color);
-                    NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
-                    noteViewModel.addNote( (TextNote) note );
-
-                }else if(notePhotoRadioButton.isChecked()) {
-
-                    String text = mPhotNoteEditText.getText().toString();
-
-                    note = new NotePhotoItem( text, mSelectedPhotoUri );
-                    note.setBackgroundColor(color);
-                    NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
-                    noteViewModel.addNotePhoto((NotePhotoItem) note );
-
-
-
-                }else{
-                    String text = mNoteCheckEditText.getText().toString();
-                    boolean isChecked = mNoteChecBox.isChecked();
-                    note = new NoteCheckItem(text, isChecked);
-                    note.setBackgroundColor(color);
-                    NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
-                    noteViewModel.addNoteCheck((NoteCheckItem) note );
-
-                }
-
-                finish();
+                addNewNote();
             }
         } );
     }
 
+    private void addNewNote() {
+        Note note;
 
-   private void requestStoragePermission(){
+        if (noteRadioButton.isChecked()) {
+            if (mNoteEditText.getText().toString().trim().equalsIgnoreCase( "" )) {
+                Toast.makeText( this, " R.string.note_shouldnot_be_empty ", Toast.LENGTH_SHORT ).show();
+                return;
+            }
+            String text = mNoteEditText.getText().toString();
+            note = new TextNote( text );
+            note.setBackgroundColor( color );
+            NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
+            noteViewModel.addNote( (TextNote) note );
+
+
+        } else if (notePhotoRadioButton.isChecked()) {
+            if (mPhotNoteEditText.getText().toString().trim().equalsIgnoreCase( "" ) && mSelectedPhotoUri == null) {
+                Toast.makeText( this, R.string.note_shouldnot_be_empty_and_an_image_required, Toast.LENGTH_SHORT ).show();
+                return;
+            }
+            String text = mPhotNoteEditText.getText().toString();
+            note = new NotePhotoItem( text, mSelectedPhotoUri );
+            note.setBackgroundColor( color );
+            NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
+            noteViewModel.addNotePhoto( (NotePhotoItem) note );
+
+
+        } else {
+            if (mNoteCheckEditText.getText().toString().trim().equalsIgnoreCase( "" )) {
+                Toast.makeText( this, R.string.note_shouldnot_be_empty, Toast.LENGTH_SHORT ).show();
+                return;
+            }
+            String text = mNoteCheckEditText.getText().toString();
+            boolean isChecked = mNoteChecBox.isChecked();
+            note = new NoteCheckItem( text, isChecked );
+            note.setBackgroundColor( color );
+            NoteViewModel noteViewModel = ViewModelProviders.of( AddNewNoteActivity.this ).get( NoteViewModel.class );
+            noteViewModel.addNoteCheck( (NoteCheckItem) note );
+
+        }
+
+        finish();
+
+    }
+
+    /*
+     Request permission to lunch Android gallery
+     */
+    private void requestStoragePermission() {
         mReadStoragePermissionGranted = false;
-       if (ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED) {
-           mReadStoragePermissionGranted = true;
-           selectPhotoIntent();
-       } else {
-           ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.PERMISSION_REQUEST_READ_STORAGE );
+        if (ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED) {
+            mReadStoragePermissionGranted = true;
+            selectPhotoIntent();
+        } else {
+            ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.PERMISSION_REQUEST_READ_STORAGE );
 
-       }
-   }
+        }
+    }
 
+    /*
+     onRequestPermissionResult method
+    */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult( requestCode, permissions, grantResults );
-        if(requestCode == Constants.PERMISSION_REQUEST_READ_STORAGE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == Constants.PERMISSION_REQUEST_READ_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 selectPhotoIntent();
-            }else{
-                Toast.makeText(this, R.string.read_permission_neede_to_access_files, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText( this, R.string.read_permission_neede_to_access_files, Toast.LENGTH_SHORT ).show();
             }
 
         }
     }
 
+    /*
+    onActivityResult
+    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
-        if(requestCode == Constants.REQUEST_GET_PHOTO){
-            if(resultCode == RESULT_OK ){
-                try{
+        if (requestCode == Constants.REQUEST_GET_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                try {
                     mSelectedPhotoUri = data.getData();
                     mPhotoImageView.setImageURI( mSelectedPhotoUri );
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     Snackbar.make( mConstraintLayout, R.string.photo_selected_error, Snackbar.LENGTH_LONG ).show();
                 }
 
@@ -284,12 +305,15 @@ public class AddNewNoteActivity extends AppCompatActivity {
         }
     }
 
-    private void selectPhotoIntent(){
-        Intent intent = new Intent( Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory( Intent.CATEGORY_OPENABLE);
+    /*
+  Intent to select phpoto from gallery
+ */
+    private void selectPhotoIntent() {
+        Intent intent = new Intent( Intent.ACTION_OPEN_DOCUMENT );
+        intent.addCategory( Intent.CATEGORY_OPENABLE );
         intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION );
-        intent.setType("image/*");
-        startActivityForResult( Intent.createChooser( intent,  getString( R.string.choose_photo)), Constants.REQUEST_GET_PHOTO );
+        intent.setType( "image/*" );
+        startActivityForResult( Intent.createChooser( intent, getString( R.string.choose_photo ) ), Constants.REQUEST_GET_PHOTO );
     }
 }
 

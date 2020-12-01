@@ -1,4 +1,4 @@
-package com.barmej.notesapp.Activities;
+package com.barmej.notesapp.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +27,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,9 +48,8 @@ public class MainActivity extends AppCompatActivity {
     //NoteAdapter
     private NoteAdapter mAdapter;
 
-    // ArrayList
+    // ArrayLists
     private ArrayList<Note> mItems;
-
     private List<Note> textNotes;
     private List<NotePhotoItem> photoNotes;
     private List<NoteCheckItem> checkNotes;
@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mListLayoutManager;
     RecyclerView.LayoutManager mGridtLayoutManager;
 
+    // Note object
     private Note note;
-
 
     //menu
     Menu mMenu;
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         // Find views by id's
         mFloatingActionButton = findViewById( R.id.floating_button_add );
         mRecyclerView = findViewById( R.id.recycler_view_photos );
-        //Create ArrayList object
 
+        //Create new ArrayLists object
         mItems = new ArrayList<Note>();
         textNotes = new ArrayList<>();
         photoNotes = new ArrayList<>();
@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClickItem(int position) {
                 Note note = mItems.get( position );
                 Intent intent;
-
-
                 switch (note.getViewType()) {
                     case Constants.NOTE_VIEW_TYPE:
                         intent = new Intent( MainActivity.this, NoteDetailsActivity.class );
@@ -150,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Set RecycelerView to ListLayoutManager as adefault
         mRecyclerView.setLayoutManager( mListLayoutManager );
+        mRecyclerView.addItemDecoration( new DividerItemDecoration( this, LinearLayoutManager.VERTICAL ) );
 
         //set the adpter to recyclerview
         mRecyclerView.setAdapter( mAdapter );
@@ -223,8 +222,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-Request note data
- */
+    Request note data
+   */
     private void requestNote() {
         final NoteViewModel noteViewModel = ViewModelProviders.of( this ).get( NoteViewModel.class );
         noteViewModel.getAllNoteLiveData().observe( this, new Observer<List<TextNote>>() {
@@ -240,8 +239,8 @@ Request note data
     }
 
     /*
-Request noteCheckItem data
-*/
+   Request noteCheckItem data
+   */
     private void requestNoteCheckItem() {
         NoteViewModel noteViewModel = ViewModelProviders.of( this ).get( NoteViewModel.class );
         noteViewModel.getAllNoteCheckItemLiveData().observe( this, new Observer<List<NoteCheckItem>>() {
@@ -269,14 +268,16 @@ Request noteCheckItem data
         } );
     }
 
+    /*
+     Add, sort notes, and notify the adapter for changes
+     */
     private void showData() {
         mItems.clear();
         mItems.addAll( textNotes );
         mItems.addAll( photoNotes );
         mItems.addAll( checkNotes );
-        Collections.sort( mItems );
+        Collections.sort( mItems, Collections.<Note>reverseOrder() );
         mAdapter.notifyDataSetChanged();
     }
-
 
 }

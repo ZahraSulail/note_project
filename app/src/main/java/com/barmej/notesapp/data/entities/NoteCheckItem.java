@@ -16,7 +16,7 @@ public class NoteCheckItem extends Note {
     private boolean isChecked;
 
     public NoteCheckItem(){
-
+        super();
     }
 
     public NoteCheckItem(String text, boolean isChecked){

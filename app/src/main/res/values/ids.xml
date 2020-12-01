@@ -11,4 +11,6 @@
     <item name="cardViewCheckNote" type="id"/>
     <item name="cardViewPhoto" type="id"/>
     <item name="button_submit" type="id"/>
+    <item name="add_note_constraint_layout" type="id"/>
+
 </resources>
