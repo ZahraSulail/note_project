@@ -295,6 +295,8 @@ public class AddNewNoteActivity extends AppCompatActivity {
                 try {
                     mSelectedPhotoUri = data.getData();
                     mPhotoImageView.setImageURI( mSelectedPhotoUri );
+                    int flags = (Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    getContentResolver().takePersistableUriPermission( mSelectedPhotoUri, flags );
 
                 } catch (Exception e) {
                     Snackbar.make( mConstraintLayout, R.string.photo_selected_error, Snackbar.LENGTH_LONG ).show();

@@ -168,6 +168,8 @@ public class NotePhotoDetailsActivity extends AppCompatActivity {
                 try {
                     photoUri = data.getData();
                     mPhotoImageView.setImageURI( photoUri );
+                    int flags = (Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    getContentResolver().takePersistableUriPermission( photoUri, flags );
 
                 } catch (Exception e) {
                     Snackbar.make( mRelativeLayout, R.string.photo_selected_error, Snackbar.LENGTH_LONG ).show();

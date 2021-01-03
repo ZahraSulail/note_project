@@ -3,7 +3,7 @@
     package="com.barmej.notesapp">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
 
     <application
@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.NoteCheckDetailsActivity"></activity>
+        <activity android:name=".activities.NoteCheckDetailsActivity" />
         <activity android:name=".activities.NotePhotoDetailsActivity" />
         <activity android:name=".activities.NoteDetailsActivity" />
         <activity android:name=".activities.AddNewNoteActivity" android:parentActivityName=".activities.MainActivity" />
